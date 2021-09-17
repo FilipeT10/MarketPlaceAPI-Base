@@ -2,22 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Loja = void 0;
 const mongoose = require("mongoose");
-const aplicationsSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    tipo: {
-        type: String,
-        enum: ["App", "Site"],
-        required: true
-    },
-    ativo: {
-        type: Boolean,
-        required: false,
-        default: true
-    }
-});
+const aplications_model_1 = require("../aplications/aplications.model");
 const lojaSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -28,7 +13,7 @@ const lojaSchema = new mongoose.Schema({
         required: true
     },
     aplications: {
-        type: [aplicationsSchema],
+        type: [aplications_model_1.AplicationsSchema],
         required: false,
         default: []
     },

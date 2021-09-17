@@ -9,7 +9,8 @@ class MainRouter extends router_1.Router {
                 users: '/users',
                 restaurants: '/restaurants',
                 reviews: '/reviews',
-                lojas: '/lojas'
+                lojas: '/lojas',
+                aplications: '/aplications'
             });
         });
     }

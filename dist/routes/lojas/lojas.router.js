@@ -20,6 +20,24 @@ class LojasRouter extends model_router_1.ModelRouter {
                 }
             }).catch(next);
         };
+        /*updateAplications = (req, resp, next) => {
+            const options = {runValidators:true, new: true}
+            
+                    Aplication.findByIdAndUpdate(req.params.idLoja, req.body, options)
+                    .then(rest =>{
+                        if(!rest){
+                            throw new NotFoundError('Aplication not found')
+                        }else{
+                            rest = req.body // Array de MenuItem
+                            return rest.save()
+                        }
+                    }).then(rest =>{
+                        resp.json(rest)
+                        return next()
+                    }).catch(next)
+                
+            
+        }*/
         this.replaceAplications = (req, resp, next) => {
             lojas_model_1.Loja.findById(req.params.id)
                 .then(rest => {
@@ -35,6 +53,15 @@ class LojasRouter extends model_router_1.ModelRouter {
                 return next();
             }).catch(next);
         };
+        this.saveLoja = (req, resp, next) => {
+            let document = new this.model(req.body);
+            console.log(document);
+            document.aplications[0].loja = document.id;
+            document.aplications[1].loja = document.id;
+            document.save()
+                .then(this.render(resp, next))
+                .catch(next);
+        };
     }
     envelope(document) {
         let resource = super.envelope(document);
@@ -44,12 +71,13 @@ class LojasRouter extends model_router_1.ModelRouter {
     applyRoutes(application) {
         application.get(`${this.basePath}`, authz_handler_1.authorize('admin'), this.findAll);
         application.get(`${this.basePath}/:id`, [this.validateId, authz_handler_1.authorize('admin'), this.findById]);
-        application.post(`${this.basePath}`, [authz_handler_1.authorize('admin'), this.save]);
+        application.post(`${this.basePath}`, [authz_handler_1.authorize('admin'), this.saveLoja]);
         application.put(`${this.basePath}/:id`, [this.validateId, authz_handler_1.authorize('admin'), this.replace]);
         application.patch(`${this.basePath}/:id`, [this.validateId, authz_handler_1.authorize('admin'), this.update]);
         application.del(`${this.basePath}/:id`, [this.validateId, authz_handler_1.authorize('admin'), this.delete]);
-        application.get(`${this.basePath}/:id/aplications`, [this.validateId, authz_handler_1.authorize('admin'), this.findAplications]);
-        application.put(`${this.basePath}/:id/aplications`, [this.validateId, authz_handler_1.authorize('admin'), this.replaceAplications]);
+        /* application.get(`${this.basePath}/:id/aplications`, [this.validateId, authorize('admin'), this.findAplications])
+         application.put(`${this.basePath}/:id/aplications`, [this.validateId, authorize('admin'), this.replaceAplications])
+         */
     }
 }
 exports.lojasRouter = new LojasRouter();

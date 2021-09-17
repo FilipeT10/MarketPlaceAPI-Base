@@ -1,35 +1,17 @@
 import * as mongoose from 'mongoose'
+import {Aplication, AplicationsSchema} from '../aplications/aplications.model'
 
-export interface AplicationsItem extends mongoose.Document{
-    name: string,
-    tipo: string
-    ativo: boolean
-}
 
 export interface Loja extends mongoose.Document {
     name: string,
     apiName: string,
-    aplications: AplicationsItem[],
+    aplications: Aplication[],
     tipoLoja: string
     ativo: boolean
 }
 
-const aplicationsSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    tipo: {
-        type: String,
-        enum: ["App", "Site"],
-        required: true
-    },
-    ativo: {
-        type: Boolean,
-        required: false,
-        default: true
-    }
-})
+
+
 
 const lojaSchema = new mongoose.Schema({
     name: {
@@ -41,7 +23,7 @@ const lojaSchema = new mongoose.Schema({
         required: true
     },
     aplications: {
-        type: [aplicationsSchema],
+        type: [AplicationsSchema],
         required: false,
         default: []
     },

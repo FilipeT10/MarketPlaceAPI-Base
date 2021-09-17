@@ -8,7 +8,8 @@ class MainRouter extends Router{
                 users: '/users',
                 restaurants: '/restaurants',
                 reviews: '/reviews',
-                lojas: '/lojas'
+                lojas: '/lojas',
+                aplications: '/aplications'
             })
         })
     }

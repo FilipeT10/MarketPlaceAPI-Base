@@ -1,0 +1,543 @@
+{
+	"info": {
+		"_postman_id": "7739569d-65ab-4b9e-a849-2817c45d472b",
+		"name": "MarketPlaceMenager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "API-Users",
+			"item": [
+				{
+					"name": "Obter Usuário",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/users",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter Usuário ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/users/613d75bf25009124616d1d17",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"users",
+								"613d75bf25009124616d1d17"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Usuário",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/users/613d7a765b2b6227caa746be",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"users",
+								"613d7a765b2b6227caa746be"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar Usuário",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "name",
+								"value": "Filipe Torres",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "email",
+								"value": "fili.pet81@gmail.com",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "cpf",
+								"value": "07244537174",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Filipe",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/users/613d7ad03bc817287dee5cd4",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"users",
+								"613d7ad03bc817287dee5cd4"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar Usuario Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Admin",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "tecsoftwar81@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "abc123",
+									"type": "text"
+								},
+								{
+									"key": "profiles",
+									"value": "admin",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/users",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar Usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Filipe",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "tecssoftwa81@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "abc123",
+									"type": "text"
+								},
+								{
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/users",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Autenticar Usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "tecsoftwar81@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "abc123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}users/authenticate",
+							"host": [
+								"{{MarketPlaceLocal}}users"
+							],
+							"path": [
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar Usuário Inteiro",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "name",
+								"value": "Filipe Torres",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "email",
+								"value": "fili.pet81@gmail.com",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "cpf",
+								"value": "07244537174",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Filipe Torres",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "fili.pet81@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "abc123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/users/613d7ad03bc817287dee5cd4",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"users",
+								"613d7ad03bc817287dee5cd4"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API-Server",
+			"item": [
+				{
+					"name": "info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}info",
+							"host": [
+								"{{MarketPlaceLocal}}info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Routes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API-LOJAS",
+			"item": [
+				{
+					"name": "Obter Lojas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/lojas",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"lojas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar Lojas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Loja Teste\",\n    \"apiName\": \"teste\",\n    \"tipoLoja\": \"Tênis\",\n    \"aplications\": [\n        {\n        \"name\": \"App Loja Teste\",\n        \"tipo\": \"App\"\n        },\n        {\n        \"name\": \"Site Loja Teste\",\n        \"tipo\": \"Site\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/lojas",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"lojas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter Lojas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/lojas",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"lojas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter Loja ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/lojas/6140c36a383118382e2a7d8f",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"lojas",
+								"6140c36a383118382e2a7d8f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter Aplications",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/lojas/6140c36a383118382e2a7d8f/aplications",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"lojas",
+								"6140c36a383118382e2a7d8f",
+								"aplications"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

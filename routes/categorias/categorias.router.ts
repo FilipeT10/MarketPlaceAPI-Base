@@ -1,0 +1,56 @@
+import {ModelRouter} from '../../common/model-router'
+import * as restify from 'restify'
+import {Categoria} from './categorias.model'
+import {NotFoundError} from 'restify-errors'
+import {Loja} from "../lojas/lojas.model"
+
+import {authorize} from '../../security/authz.handler'
+
+class CategoriasRouter extends ModelRouter<Categoria> {
+
+    constructor(){
+        super(Categoria)
+    }
+    envelope(document){
+        let resource = super.envelope(document)
+        const restId = document.loja._id ? document.loja._id : document.loja
+        resource._links.loja = `/lojas/${restId}`
+        return resource
+    }
+
+    findById = (req, resp, next) => {
+        this.model.findById(req.params.id)
+        .populate('loja', 'name')
+        .then(this.render(resp, next))
+        .catch(next)
+    }
+    
+    findByLoja = (req, resp, next) =>{
+        if(req.query.loja){
+            Categoria.findByLoja(req.query.loja)
+            .then(user => {
+
+                console.log(req.query.loja)
+                if(user){
+                    return [user]
+                }else{
+                    return []
+                }
+            })
+            .then(this.renderAll(resp, next, {pageSize: this.pageSize, url: req.url}))
+            .catch(next)
+        }else{
+            next()
+        }
+    }
+    
+
+    applyRoutes(application: restify.Server){
+
+        application.get(`${this.basePath}`, [this.findByLoja, this.findAll])
+        application.get(`${this.basePath}/:id`, [this.validateId, this.findById])
+        application.post(`${this.basePath}`, [authorize('admin'), this.save])
+      }
+}
+
+export const categoriasRouter = new CategoriasRouter();

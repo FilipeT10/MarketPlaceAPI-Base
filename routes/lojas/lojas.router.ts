@@ -2,6 +2,7 @@ import {ModelRouter} from '../../common/model-router'
 import * as restify from 'restify'
 import {Loja} from './lojas.model'
 
+
 import {authorize} from '../../security/authz.handler'
 
 import {NotFoundError} from 'restify-errors'
@@ -29,6 +30,24 @@ class LojasRouter extends ModelRouter<Loja> {
             }
         }).catch(next)
     }
+    /*updateAplications = (req, resp, next) => {
+        const options = {runValidators:true, new: true}
+        
+                Aplication.findByIdAndUpdate(req.params.idLoja, req.body, options)
+                .then(rest =>{
+                    if(!rest){
+                        throw new NotFoundError('Aplication not found')
+                    }else{
+                        rest = req.body // Array de MenuItem
+                        return rest.save()
+                    }
+                }).then(rest =>{
+                    resp.json(rest)
+                    return next()
+                }).catch(next)
+            
+        
+    }*/
     replaceAplications = (req, resp, next)=>{
         Loja.findById(req.params.id)
         .then(rest =>{
@@ -43,19 +62,28 @@ class LojasRouter extends ModelRouter<Loja> {
             return next()
         }).catch(next)
     }
+    saveLoja = (req, resp, next)=>{
+        let document = new this.model(req.body);
+        console.log(document)
+        document.aplications[0].loja = document.id
+        document.aplications[1].loja = document.id
+        document.save()
+        .then(this.render(resp, next))
+        .catch(next)
+    }
 
  applyRoutes(application: restify.Server){
 
      application.get(`${this.basePath}`, authorize('admin'), this.findAll)
      application.get(`${this.basePath}/:id`, [this.validateId, authorize('admin'), this.findById])
-     application.post(`${this.basePath}`, [ authorize('admin'), this.save])
+     application.post(`${this.basePath}`, [ authorize('admin'), this.saveLoja])
      application.put(`${this.basePath}/:id`, [this.validateId, authorize('admin'), this.replace])
      application.patch(`${this.basePath}/:id`, [this.validateId, authorize('admin'), this.update])
      application.del(`${this.basePath}/:id`, [this.validateId, authorize('admin'), this.delete ])
     
-     application.get(`${this.basePath}/:id/aplications`, [this.validateId, authorize('admin'), this.findAplications])
+    /* application.get(`${this.basePath}/:id/aplications`, [this.validateId, authorize('admin'), this.findAplications])
      application.put(`${this.basePath}/:id/aplications`, [this.validateId, authorize('admin'), this.replaceAplications])
-     
+     */
     }
 }
 
