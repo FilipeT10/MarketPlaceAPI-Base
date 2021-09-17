@@ -27,17 +27,16 @@ class CategoriasRouter extends ModelRouter<Categoria> {
     
     findByLoja = (req, resp, next) =>{
         if(req.query.loja){
-            Categoria.findByLoja(req.query.loja)
+            Categoria.findByLoja(req.query.loja, req.query.ativo)
             .then(user => {
 
-                console.log(req.query.loja)
                 if(user){
-                    return [user]
+                    return user
                 }else{
                     return []
                 }
             })
-            .then(this.renderAll(resp, next, {pageSize: this.pageSize, url: req.url}))
+            .then( res => { this.renderAll(resp.json(res), next, {pageSize: this.pageSize, url: req.url})})
             .catch(next)
         }else{
             next()

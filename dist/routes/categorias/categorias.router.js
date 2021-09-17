@@ -15,17 +15,16 @@ class CategoriasRouter extends model_router_1.ModelRouter {
         };
         this.findByLoja = (req, resp, next) => {
             if (req.query.loja) {
-                categorias_model_1.Categoria.findByLoja(req.query.loja)
+                categorias_model_1.Categoria.findByLoja(req.query.loja, req.query.ativo)
                     .then(user => {
-                    console.log(req.query.loja);
                     if (user) {
-                        return [user];
+                        return user;
                     }
                     else {
                         return [];
                     }
                 })
-                    .then(this.renderAll(resp, next, { pageSize: this.pageSize, url: req.url }))
+                    .then(res => { this.renderAll(resp.json(res), next, { pageSize: this.pageSize, url: req.url }); })
                     .catch(next);
             }
             else {

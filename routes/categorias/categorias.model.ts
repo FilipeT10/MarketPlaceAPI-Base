@@ -26,12 +26,20 @@ const categoriaSchema = new mongoose.Schema({
     }
 })
 export interface CategoriaModel extends mongoose.Model<Categoria> {
-    findByLoja(loja: string, projection?: string): Promise<Categoria>
+    findByLoja(loja: string, ativo: boolean, projection?: string): Promise<Categoria>
 }
 
-categoriaSchema.statics.findByLoja = function(loja: string, projection: string){
-
-    return this.findOne({loja}, projection)// {email: email}
+categoriaSchema.statics.findByLoja = function(loja: string, ativo: boolean, projection: string){
+    /*return this.find({loja}).exec(function(err, users) {
+        console.log(users)
+        //res.json(users);
+      })
+    //*/
+    if(ativo != undefined){
+        return this.find({loja, ativo}, projection)
+    }else{
+        return this.find({loja}, projection)
+    }
 }
 
 
