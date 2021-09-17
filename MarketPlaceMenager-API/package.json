@@ -1,0 +1,55 @@
+{
+  "name": "MarketPlace-API-Manager",
+  "version": "1.0.0",
+  "description": "MarketPlace API Manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "ts-node jest.startup.ts",
+    "start": "nodemon dist/main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "jest": {
+    "globals": {
+      "address": "http://[::]:3001"
+    },
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.4",
+    "morgan": "^1.10.0",
+    "restify": "6.3.4",
+    "restify-errors": "^8.0.2"
+  },
+  "devDependencies": {
+    "@types/morgan": "^1.9.3",
+    "@types/bcrypt": "^3.0.1",
+    "@types/jest": "^26.0.22",
+    "@types/jsonwebtoken": "^8.5.1",
+    "@types/mongoose": "^5.10.4",
+    "@types/restify": "5.0.11",
+    "@types/restify-errors": "^4.3.3",
+    "@types/supertest": "^2.0.11",
+    "jest": "^26.6.3",
+    "jest-cli": "^26.6.3",
+    "supertest": "^6.1.3",
+    "ts-jest": "^26.5.5",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4"
+  }
+}
