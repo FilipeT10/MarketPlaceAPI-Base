@@ -14,7 +14,7 @@ export class Server{
     initializeDb(){
 
         (<any>mongoose).Promise = global.Promise
-        return mongoose.connect("mongodb+srv://developer:loHC0F2Afb6MmB8f@marketplace.qsxoe.mongodb.net/myFirstDatabase", 
+        return mongoose.connect(environment.db.url, 
             { useNewUrlParser: true,
                 useUnifiedTopology: true 
             }
