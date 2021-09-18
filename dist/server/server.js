@@ -11,7 +11,7 @@ const logger = require("morgan");
 class Server {
     initializeDb() {
         mongoose.Promise = global.Promise;
-        return mongoose.connect(environment_1.environment.db.url, { useNewUrlParser: true,
+        return mongoose.connect("mongodb+srv://developer:loHC0F2Afb6MmB8f@marketplace.qsxoe.mongodb.net/myFirstDatabase", { useNewUrlParser: true,
             useUnifiedTopology: true
         });
     }
