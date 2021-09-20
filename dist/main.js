@@ -8,6 +8,7 @@ const main_router_1 = require("./main.router");
 const lojas_router_1 = require("./routes/lojas/lojas.router");
 const aplications_router_1 = require("./routes/aplications/aplications.router");
 const categorias_router_1 = require("./routes/categorias/categorias.router");
+const produtos_router_1 = require("./routes/produtos/produtos.router");
 const server = new server_1.Server();
 server.bootstrap([
     main_router_1.mainRouter,
@@ -16,6 +17,7 @@ server.bootstrap([
     reviews_router_1.reviewsRouter,
     lojas_router_1.lojasRouter,
     aplications_router_1.aplicationsRouter,
+    produtos_router_1.produtosRouter,
     categorias_router_1.categoriasRouter
 ]).then(server => {
     console.log('Server is listening on:', server.application.address());
