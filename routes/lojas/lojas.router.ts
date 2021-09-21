@@ -76,10 +76,10 @@ class LojasRouter extends ModelRouter<Loja> {
 
      application.get(`${this.basePath}`, authorize('admin'), this.findAll)
      application.get(`${this.basePath}/:id`, [this.validateId, authorize('admin'), this.findById])
-     application.post(`${this.basePath}`, [ authorize('admin'), this.saveLoja])
-     application.put(`${this.basePath}/:id`, [this.validateId, authorize('admin'), this.replace])
-     application.patch(`${this.basePath}/:id`, [this.validateId, authorize('admin'), this.update])
-     application.del(`${this.basePath}/:id`, [this.validateId, authorize('admin'), this.delete ])
+     application.post(`${this.basePath}`, [ authorize('sysAdminMktPlc'), this.saveLoja])
+     application.put(`${this.basePath}/:id`, [this.validateId, authorize('sysAdminMktPlc'), this.replace])
+     application.patch(`${this.basePath}/:id`, [this.validateId, authorize('sysAdminMktPlc'), this.update])
+     application.del(`${this.basePath}/:id`, [this.validateId, authorize('sysAdminMktPlc'), this.delete ])
     
     /* application.get(`${this.basePath}/:id/aplications`, [this.validateId, authorize('admin'), this.findAplications])
      application.put(`${this.basePath}/:id/aplications`, [this.validateId, authorize('admin'), this.replaceAplications])
