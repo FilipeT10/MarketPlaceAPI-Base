@@ -19,7 +19,7 @@ const produtoSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        maxlength: 20
+        maxlength: 40
     },
     loja: {
         type: mongoose.Schema.Types.ObjectId,
