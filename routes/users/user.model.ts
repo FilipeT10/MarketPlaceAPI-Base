@@ -2,12 +2,18 @@ import * as mongoose from 'mongoose'
 import {validateCPF} from '../../common/validator'
 import * as bcrypt from 'bcrypt'
 import {environment} from '../../common/environment'
+import {Loja} from '../lojas/lojas.model'
+
+
+
+
 export interface User extends mongoose.Document {
     name: string,
     email: string,
     password: string,
     cpf: string,
     gender: string,
+    loja: mongoose.Types.ObjectId | Loja,
     profiles: string[],
     matches(password: string): boolean,
     hasAny(...profiles: string[]): boolean
@@ -16,7 +22,6 @@ export interface User extends mongoose.Document {
 export interface UserModel extends mongoose.Model<User> {
     findByEmail(email: string, projection?: string): Promise<User>
 }
-
 
 const userSchema = new mongoose.Schema({
 
@@ -49,6 +54,11 @@ const userSchema = new mongoose.Schema({
             validator: validateCPF,
             message: '{PATH}: Invalid CPF ({VALUE})'
         }
+    },
+    loja: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Loja',
+        required: true
     },
     profiles: {
         type: [String],

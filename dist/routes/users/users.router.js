@@ -32,16 +32,16 @@ class UsersRouter extends model_router_1.ModelRouter {
     }
     applyRoutes(application) {
         application.get({ path: `${this.basePath}`, version: '2.0.0' }, [
-            authz_handler_1.authorize('admin'),
+            authz_handler_1.authorize('sysAdminMktPlc'),
             this.findByEmail,
             this.findAll
         ]);
         application.get({ path: `${this.basePath}`, version: '1.0.0' }, this.findAll);
-        application.get(`${this.basePath}/:id`, [this.validateId, authz_handler_1.authorize('admin'), this.findById]);
+        application.get(`${this.basePath}/:id`, [this.validateId, authz_handler_1.authorize('admin'), authz_handler_1.authorize('sysAdminMktPlc'), this.findById]);
         application.post(`${this.basePath}`, this.save);
         application.put(`${this.basePath}/:id`, [this.validateId, authz_handler_1.authorize('admin'), this.replace]);
         application.patch(`${this.basePath}/:id`, [this.validateId, authz_handler_1.authorize('admin'), this.update]);
-        application.del(`${this.basePath}/:id`, [this.validateId, authz_handler_1.authorize('admin'), this.delete]);
+        application.del(`${this.basePath}/:id`, [this.validateId, authz_handler_1.authorize('sysAdminMktPlc'), this.delete]);
         application.post(`${this.basePath}/authenticate`, auth_handler_1.authenticate);
     }
 }

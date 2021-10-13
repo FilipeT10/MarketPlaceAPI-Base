@@ -36,6 +36,11 @@ const userSchema = new mongoose.Schema({
             message: '{PATH}: Invalid CPF ({VALUE})'
         }
     },
+    loja: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Loja',
+        required: true
+    },
     profiles: {
         type: [String],
         required: false
