@@ -75,7 +75,7 @@ class LojasRouter extends ModelRouter<Loja> {
  applyRoutes(application: restify.Server){
 
      application.get(`${this.basePath}`, authorize('admin'), this.findAll)
-     application.get(`${this.basePath}/:id`, [this.validateId, authorize('admin'), this.findById])
+     application.get(`${this.basePath}/:id`, [this.validateId, this.findById])
      application.post(`${this.basePath}`, [ authorize('sysAdminMktPlc'), this.saveLoja])
      application.put(`${this.basePath}/:id`, [this.validateId, authorize('sysAdminMktPlc'), this.replace])
      application.patch(`${this.basePath}/:id`, [this.validateId, authorize('sysAdminMktPlc'), this.update])
