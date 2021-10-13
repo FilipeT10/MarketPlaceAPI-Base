@@ -3,7 +3,7 @@ import {Loja} from '../lojas/lojas.model'
 import {User} from '../users/user.model'
 
 export interface Produto extends mongoose.Document{
-    name: number,
+    name: string,
     loja: mongoose.Types.ObjectId | Loja,
     categoria: mongoose.Types.ObjectId | Loja,
     preco: string,
