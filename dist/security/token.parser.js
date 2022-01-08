@@ -4,7 +4,7 @@ exports.tokenParser = void 0;
 const user_model_1 = require("../routes/users/user.model");
 const jwt = require("jsonwebtoken");
 const environment_1 = require("../common/environment");
-const tokenParser = (req, resp, next) => {
+exports.tokenParser = (req, resp, next) => {
     const token = extractToken(req);
     if (token) {
         jwt.verify(token, environment_1.environment.security.apiSecret, applyBearer(req, next));
@@ -13,7 +13,6 @@ const tokenParser = (req, resp, next) => {
         next();
     }
 };
-exports.tokenParser = tokenParser;
 function extractToken(req) {
     let token = undefined;
     const authorization = req.header('authorization');

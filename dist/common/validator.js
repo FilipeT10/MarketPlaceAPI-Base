@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateCPF = void 0;
 //adaptada de https://gist.github.com/joaohcrangel/8bd48bcc40b9db63bef7201143303937.js
-const validateCPF = (cpf) => {
+exports.validateCPF = (cpf) => {
     let sum, rest;
     if (cpf == undefined || cpf.trim().length === 0 || cpf === "00000000000") {
         return false;
@@ -32,4 +32,3 @@ const validateCPF = (cpf) => {
     }
     return true;
 };
-exports.validateCPF = validateCPF;

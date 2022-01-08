@@ -33,6 +33,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.4",
     "morgan": "^1.10.0",
+    "nodemon": "^2.0.15",
     "restify": "6.3.4",
     "restify-errors": "^8.0.2"
   },
