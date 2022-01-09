@@ -44,7 +44,12 @@ export class Server{
                     res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, PATCH, OPTIONS');
                     res.setHeader('Access-Control-Allow-Headers', '*');
                     res.setHeader('Access-Control-Allow-Credentials', 'true');
-                    next();
+                    
+                    if('OPTIONS' == req.method){
+                        res.send(200)
+                    }else{
+                        next();
+                    }
                 });
                 for (let router of routers){
                     router.applyRoutes(this.application)
