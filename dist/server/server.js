@@ -33,7 +33,7 @@ class Server {
                     res.setHeader('Access-Control-Allow-Headers', '*');
                     res.setHeader('Access-Control-Allow-Credentials', 'true');
                     if ('OPTIONS' == req.method) {
-                        res.send(200);
+                        res.send(204);
                     }
                     else {
                         next();
