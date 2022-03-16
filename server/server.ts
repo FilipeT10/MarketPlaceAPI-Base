@@ -40,7 +40,7 @@ export class Server{
 
                 
                 this.application.use(function (req, res, next) {
-                    res.setHeader('Access-Control-Allow-Origin', '*');
+                    res.setHeader('Access-Control-Allow-Origin', 'http://192.168.1.7:3000');
                     res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, PATCH, OPTIONS');
                     res.setHeader('Access-Control-Allow-Headers', '*');
                     res.setHeader('Access-Control-Allow-Credentials', 'true');
