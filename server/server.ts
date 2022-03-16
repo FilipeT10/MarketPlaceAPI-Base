@@ -10,7 +10,7 @@ import * as corsMiddleware from 'restify-cors-middleware'
 import * as cors from 'cors'
 
 
-const whitelist = ["http://localhost:3000"]
+const whitelist = ["http://192.168.1.7:3000"]
 const corsOptions = {
     origin: function (origin, callback) {
         if (!origin || whitelist.indexOf(origin) !== -1) {

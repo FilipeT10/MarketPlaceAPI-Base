@@ -9,7 +9,7 @@ const merge_patch_parses_1 = require("./merge-patch.parses");
 const token_parser_1 = require("../security/token.parser");
 const logger = require("morgan");
 const cors = require("cors");
-const whitelist = ["http://localhost:3000"];
+const whitelist = ["http://192.168.1.7:3000"];
 const corsOptions = {
     origin: function (origin, callback) {
         if (!origin || whitelist.indexOf(origin) !== -1) {
