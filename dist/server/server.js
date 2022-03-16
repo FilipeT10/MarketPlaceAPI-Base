@@ -46,7 +46,6 @@ class Server {
                 this.application.use(cors(corsOptions));
 
                 this.application.use((req, res, next) => {
-                    res.header("Access-Control-Allow-Origin", "*");
                     res.header(
                       "Access-Control-Allow-Headers",
                       "Origin, X-Requested-With, Content-Type, Accept, Authorization, 'Content-Type' : 'multipart/form-data' ,* "
@@ -57,7 +56,7 @@ class Server {
                     );
                     next();
                   });
-                  
+
                 for (let router of routers) {
                     router.applyRoutes(this.application);
                 }
