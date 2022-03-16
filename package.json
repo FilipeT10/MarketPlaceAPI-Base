@@ -40,11 +40,11 @@
     "restify-errors": "^8.0.2"
   },
   "devDependencies": {
-    "@types/morgan": "^1.9.3",
     "@types/bcrypt": "^3.0.1",
     "@types/jest": "^26.0.22",
     "@types/jsonwebtoken": "^8.5.1",
     "@types/mongoose": "^5.10.4",
+    "@types/morgan": "^1.9.3",
     "@types/restify": "5.0.11",
     "@types/restify-errors": "^4.3.3",
     "@types/supertest": "^2.0.11",

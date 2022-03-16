@@ -8,6 +8,19 @@ const error_handler_1 = require("./error.handler");
 const merge_patch_parses_1 = require("./merge-patch.parses");
 const token_parser_1 = require("../security/token.parser");
 const logger = require("morgan");
+const cors = require("cors");
+const whitelist = ["http://localhost:3000"];
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (!origin || whitelist.indexOf(origin) !== -1) {
+            callback(null, true);
+        }
+        else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
+    credentials: true,
+};
 class Server {
     initializeDb() {
         mongoose.Promise = global.Promise;
@@ -27,18 +40,7 @@ class Server {
                 this.application.use(merge_patch_parses_1.mergePatchBodyParser);
                 this.application.use(token_parser_1.tokenParser);
                 this.application.use(logger("dev"));
-                this.application.use(function (req, res, next) {
-                    res.setHeader('Access-Control-Allow-Origin', 'http://192.168.1.7:3000');
-                    res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, PATCH, OPTIONS');
-                    res.setHeader('Access-Control-Allow-Headers', '*');
-                    res.setHeader('Access-Control-Allow-Credentials', 'true');
-                    if ('OPTIONS' == req.method) {
-                        res.send(204);
-                    }
-                    else {
-                        next();
-                    }
-                });
+                this.application.use(cors(corsOptions));
                 for (let router of routers) {
                     router.applyRoutes(this.application);
                 }
