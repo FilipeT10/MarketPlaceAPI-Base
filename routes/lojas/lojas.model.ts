@@ -13,6 +13,7 @@ export interface Loja extends mongoose.Document {
 
 
 
+
 const lojaSchema = new mongoose.Schema({
     name: {
         type: String,
