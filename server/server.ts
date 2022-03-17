@@ -7,26 +7,10 @@ import {mergePatchBodyParser} from './merge-patch.parses'
 import {tokenParser} from "../security/token.parser"
 import * as logger from 'morgan'
 import * as corsMiddleware from 'restify-cors-middleware'
-import * as cors from 'cors'
-
-
-const whitelist = ["http://192.168.1.7:3000"]
-const corsOptions = {
-    origin: function (origin, callback) {
-        if (!origin || whitelist.indexOf(origin) !== -1) {
-        callback(null, true)
-        } else {
-        callback(new Error("Not allowed by CORS"))
-        }
-    },
-    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH', 'OPTIONS'],
-    exposedHeaders: '*',
-    preflightContinue: false,
-    credentials: true,
-    }
 export class Server{
 
     application: restify.Server
+
 
 
     initializeDb(){
@@ -38,8 +22,6 @@ export class Server{
             }
             )
     }
-    
-
 
     initRoutes(routers: Router[]): Promise<any>{
         return new Promise((resolve, reject)=>{
@@ -51,14 +33,27 @@ export class Server{
                     
                 })
                 
+                
                 this.application.use(restify.plugins.queryParser())
                 this.application.use(restify.plugins.bodyParser())
                 this.application.use(mergePatchBodyParser)
                 this.application.use(tokenParser)
                 this.application.use(logger("dev"))
-                this.application.use(cors(corsOptions))
 
-
+                
+                
+                this.application.use(function (req, res, next) {
+                    res.setHeader('Access-Control-Allow-Origin', '*');
+                    res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, PATCH, OPTIONS');
+                    res.setHeader('Access-Control-Allow-Headers', '*');
+                    res.setHeader('Access-Control-Allow-Credentials', 'true');
+                    
+                    if('OPTIONS' == req.method){
+                        res.send(204)
+                    }else{
+                        next();
+                    }
+                });
                 for (let router of routers){
                     router.applyRoutes(this.application)
                 }
