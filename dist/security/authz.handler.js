@@ -6,10 +6,10 @@ const authorize = (...profiles) => {
     console.log('Entrou Authororize');
     return (req, resp, next) => {
         if (req.authenticated !== undefined && req.authenticated.hasAny(...profiles)) {
-            next();
+            return next();
         }
         else {
-            next(new restify_errors_1.ForbiddenError('Permission denied'));
+            return next(new restify_errors_1.ForbiddenError('Permission denied'));
         }
     };
 };
