@@ -6,6 +6,7 @@ const user_model_1 = require("../routes/users/user.model");
 const jwt = require("jsonwebtoken");
 const environment_1 = require("../common/environment");
 const authenticate = (req, resp, next) => {
+    console.log('Entrou Authenticate');
     const { email, password } = req.body;
     user_model_1.User.findByEmail(email, '+password')
         .then(user => {

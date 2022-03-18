@@ -15,6 +15,8 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
 
 
     envelope(document: any): any {
+
+        console.log('Entrou Envelope')
         let resource = Object.assign({_links:{}}, document.toJSON())
         resource._links.self = `${this.basePath}/${resource._id}`
         return resource
@@ -22,6 +24,8 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
 
 
     envelopeAll(documents: any[], options: any = {}): any {
+
+        console.log('Entrou EnvelopeAll')
         const resource: any ={
             _links: {
                 self:`${options.url}`
@@ -42,6 +46,8 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
     }
 
     validateId = (req, resp, next) => {
+
+        console.log('Entrou Validate ID')
         if(!mongoose.Types.ObjectId.isValid(req.params.id)){
             next(new NotFoundError('Document not found'));
         }else{
@@ -50,6 +56,8 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
     }
 
     findAll = (req, resp, next) => {
+
+        console.log('Entrou FindAll')
         let page = parseInt(req.query._page || 1)
         page = page > 0 ? page : 1
 
@@ -63,18 +71,24 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
         .catch(next)
     }
     findById = (req, resp, next) => {
+
+        console.log('Entrou FindByID')
         this.model.findById(req.params.id)
         .then(this.render(resp, next))
         .catch(next)
     }
     save =  (req, resp, next) => {
+
+        console.log('Entrou Save')
         let document = new this.model(req.body);
         document.save()
         .then(this.render(resp, next))
-        .catch(NotFoundError('Documento não encontrado'))
+        .catch(next)
     }
 
     replace = (req, resp, next) => {
+
+        console.log('Entrou Replace')
         const options = {runValidators:true, overwrite: true}
         this.model.update({_id:req.params.id}, req.body, options).exec().then(result=>{
             if(result.n){
@@ -90,6 +104,8 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
         
     }
     update = (req, resp, next) => {
+
+        console.log('Entrou Update')
         const options = {runValidators:true, new: true}
         this.model.findByIdAndUpdate(req.params.id, req.body, options)
         .then(this.render(resp, next))
@@ -99,6 +115,7 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
 
     delete = (req, resp, next) => {
         
+        console.log('Entrou Delete')
         this.model.findByIdAndDelete(req.params.id).then((cmdResult:any)=>{
             console.log(cmdResult)
             if(cmdResult != null){

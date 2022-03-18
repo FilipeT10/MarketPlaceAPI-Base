@@ -10,6 +10,7 @@ class ModelRouter extends router_1.Router {
         this.model = model;
         this.pageSize = 4;
         this.validateId = (req, resp, next) => {
+            console.log('Entrou Validate ID');
             if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
                 next(new restify_errors_1.NotFoundError('Document not found'));
             }
@@ -18,6 +19,7 @@ class ModelRouter extends router_1.Router {
             }
         };
         this.findAll = (req, resp, next) => {
+            console.log('Entrou FindAll');
             let page = parseInt(req.query._page || 1);
             page = page > 0 ? page : 1;
             const skip = (page - 1) * this.pageSize;
@@ -29,17 +31,20 @@ class ModelRouter extends router_1.Router {
                 .catch(next);
         };
         this.findById = (req, resp, next) => {
+            console.log('Entrou FindByID');
             this.model.findById(req.params.id)
                 .then(this.render(resp, next))
                 .catch(next);
         };
         this.save = (req, resp, next) => {
+            console.log('Entrou Save');
             let document = new this.model(req.body);
             document.save()
                 .then(this.render(resp, next))
-                .catch((0, restify_errors_1.NotFoundError)('Documento não encontrado'));
+                .catch(next);
         };
         this.replace = (req, resp, next) => {
+            console.log('Entrou Replace');
             const options = { runValidators: true, overwrite: true };
             this.model.update({ _id: req.params.id }, req.body, options).exec().then(result => {
                 if (result.n) {
@@ -52,12 +57,14 @@ class ModelRouter extends router_1.Router {
                 .catch(next);
         };
         this.update = (req, resp, next) => {
+            console.log('Entrou Update');
             const options = { runValidators: true, new: true };
             this.model.findByIdAndUpdate(req.params.id, req.body, options)
                 .then(this.render(resp, next))
                 .catch(next);
         };
         this.delete = (req, resp, next) => {
+            console.log('Entrou Delete');
             this.model.findByIdAndDelete(req.params.id).then((cmdResult) => {
                 console.log(cmdResult);
                 if (cmdResult != null) {
@@ -72,11 +79,13 @@ class ModelRouter extends router_1.Router {
         this.basePath = `/${model.collection.name}`;
     }
     envelope(document) {
+        console.log('Entrou Envelope');
         let resource = Object.assign({ _links: {} }, document.toJSON());
         resource._links.self = `${this.basePath}/${resource._id}`;
         return resource;
     }
     envelopeAll(documents, options = {}) {
+        console.log('Entrou EnvelopeAll');
         const resource = {
             _links: {
                 self: `${options.url}`

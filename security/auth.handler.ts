@@ -5,6 +5,8 @@ import * as jwt from  'jsonwebtoken'
 import {environment} from '../common/environment'
 
 export const authenticate: restify.RequestHandler = (req, resp, next) =>{
+
+    console.log('Entrou Authenticate')
     const{email, password} = req.body
 
     User.findByEmail(email, '+password')
