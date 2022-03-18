@@ -54,7 +54,13 @@ class LojasRouter extends model_router_1.ModelRouter {
             }).catch(next);
         };
         this.saveLoja = (req, resp, next) => {
-            resp.json({});
+            let document = new this.model(req.body);
+            console.log(document);
+            document.aplications[0].loja = document.id;
+            document.aplications[1].loja = document.id;
+            document.save()
+                .then(this.render(resp, next))
+                .catch(next);
         };
     }
     envelope(document) {
@@ -65,7 +71,7 @@ class LojasRouter extends model_router_1.ModelRouter {
     applyRoutes(application) {
         application.get(`${this.basePath}`, (0, authz_handler_1.authorize)('admin'), this.findAll);
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById]);
-        application.post(`${this.basePath}`, this.saveLoja);
+        application.post(`${this.basePath}`, [(0, authz_handler_1.authorize)('sysAdminMktPlc'), this.saveLoja]);
         application.put(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('sysAdminMktPlc'), this.replace]);
         application.patch(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('sysAdminMktPlc'), this.update]);
         application.del(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('sysAdminMktPlc'), this.delete]);
