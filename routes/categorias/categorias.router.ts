@@ -48,7 +48,7 @@ class CategoriasRouter extends ModelRouter<Categoria> {
 
         application.get(`${this.basePath}`, [this.findByLoja, this.findAll])
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById])
-        application.post(`${this.basePath}`, [authorize('admin'), this.save])
+        application.post(`${this.basePath}`, [ this.save])
         application.patch(`${this.basePath}/:id`, [this.validateId, authorize('admin'), this.update])
       }
 }
