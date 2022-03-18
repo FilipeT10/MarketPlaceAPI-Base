@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authorize = void 0;
 const restify_errors_1 = require("restify-errors");
-exports.authorize = (...profiles) => {
+const authorize = (...profiles) => {
     return (req, resp, next) => {
         if (req.authenticated !== undefined && req.authenticated.hasAny(...profiles)) {
             next();
@@ -12,3 +12,4 @@ exports.authorize = (...profiles) => {
         }
     };
 };
+exports.authorize = authorize;

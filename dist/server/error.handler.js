@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleError = void 0;
-exports.handleError = (req, resp, err, done) => {
+const handleError = (req, resp, err, done) => {
     switch (err.name) {
         case 'MongoError':
             if (err.code === 11000) {
@@ -46,3 +46,4 @@ exports.handleError = (req, resp, err, done) => {
             break
     }*/
 };
+exports.handleError = handleError;

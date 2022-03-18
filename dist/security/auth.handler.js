@@ -5,7 +5,7 @@ const restify_errors_1 = require("restify-errors");
 const user_model_1 = require("../routes/users/user.model");
 const jwt = require("jsonwebtoken");
 const environment_1 = require("../common/environment");
-exports.authenticate = (req, resp, next) => {
+const authenticate = (req, resp, next) => {
     const { email, password } = req.body;
     user_model_1.User.findByEmail(email, '+password')
         .then(user => {
@@ -20,3 +20,4 @@ exports.authenticate = (req, resp, next) => {
         }
     }).catch(next);
 };
+exports.authenticate = authenticate;
