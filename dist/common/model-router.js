@@ -37,7 +37,7 @@ class ModelRouter extends router_1.Router {
             let document = new this.model(req.body);
             document.save()
                 .then(this.render(resp, next))
-                .catch(next);
+                .catch((0, restify_errors_1.NotFoundError)('Documento não encontrado'));
         };
         this.replace = (req, resp, next) => {
             const options = { runValidators: true, overwrite: true };

@@ -71,7 +71,7 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
         let document = new this.model(req.body);
         document.save()
         .then(this.render(resp, next))
-        .catch(next)
+        .catch(NotFoundError('Documento não encontrado'))
     }
 
     replace = (req, resp, next) => {
