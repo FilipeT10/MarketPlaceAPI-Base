@@ -6,11 +6,9 @@ import { handleError } from './error.handler'
 import {mergePatchBodyParser} from './merge-patch.parses'
 import {tokenParser} from "../security/token.parser"
 import * as logger from 'morgan'
-import * as corsMiddleware from 'restify-cors-middleware'
 export class Server{
 
-    application: restify.Server
-
+        application: restify.Server
 
 
     initializeDb(){
@@ -23,6 +21,7 @@ export class Server{
             )
     }
 
+
     initRoutes(routers: Router[]): Promise<any>{
         return new Promise((resolve, reject)=>{
             try{
@@ -33,26 +32,18 @@ export class Server{
                     
                 })
                 
-                
                 this.application.use(restify.plugins.queryParser())
                 this.application.use(restify.plugins.bodyParser())
                 this.application.use(mergePatchBodyParser)
                 this.application.use(tokenParser)
                 this.application.use(logger("dev"))
 
-                
-                
+
                 this.application.use(function (req, res, next) {
                     res.setHeader('Access-Control-Allow-Origin', '*');
                     res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, PATCH, OPTIONS');
-                    res.setHeader('Access-Control-Allow-Headers', '*');
-                    res.setHeader('Access-Control-Allow-Credentials', 'true');
-                    
-                    if('OPTIONS' == req.method){
-                        res.send(204)
-                    }else{
-                        next();
-                    }
+                    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+                    next();
                 });
                 for (let router of routers){
                     router.applyRoutes(this.application)
@@ -81,11 +72,13 @@ export class Server{
             }
         })
     }
+
     bootstrap(routers: Router[] = []): Promise<Server>{
         return this.initializeDb().then(()=>
         this.initRoutes(routers).then(()=> this))
         //return this.initRoutes(routers).then(()=> this)
     }
+
     shutdown(){
         return mongoose.disconnect().then(()=>this.application.close())
     }
