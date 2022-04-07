@@ -4,7 +4,6 @@ exports.usersRouter = void 0;
 const model_router_1 = require("../../common/model-router");
 const user_model_1 = require("./user.model");
 const auth_handler_1 = require("../../security/auth.handler");
-const authz_handler_1 = require("../../security/authz.handler");
 class UsersRouter extends model_router_1.ModelRouter {
     constructor() {
         super(user_model_1.User);
@@ -32,15 +31,14 @@ class UsersRouter extends model_router_1.ModelRouter {
     }
     applyRoutes(application) {
         application.get(`${this.basePath}`, [
-            (0, authz_handler_1.authorize)('sysAdminMktPlc'),
             this.findByEmail,
             this.findAll
         ]);
-        application.get(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('admin'), (0, authz_handler_1.authorize)('sysAdminMktPlc'), this.findById]);
+        application.get(`${this.basePath}/:id`, [this.validateId, this.findById]);
         application.post(`${this.basePath}`, this.save);
-        application.put(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.replace]);
-        application.patch(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.update]);
-        application.del(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('sysAdminMktPlc'), this.delete]);
+        application.put(`${this.basePath}/:id`, [this.validateId, this.replace]);
+        application.patch(`${this.basePath}/:id`, [this.validateId, this.update]);
+        application.del(`${this.basePath}/:id`, [this.validateId, this.delete]);
         application.post(`${this.basePath}/authenticate`, auth_handler_1.authenticate);
     }
 }

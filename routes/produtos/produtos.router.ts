@@ -4,7 +4,6 @@ import {Produto} from './produtos.model'
 import {NotFoundError} from 'restify-errors'
 import {Loja} from "../lojas/lojas.model"
 
-import {authorize} from '../../security/authz.handler'
 
 class ProdutosRouter extends ModelRouter<Produto> {
 
@@ -51,8 +50,8 @@ class ProdutosRouter extends ModelRouter<Produto> {
 
         application.get(`${this.basePath}`, [this.findByLoja, this.findAll])
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById])
-        application.post(`${this.basePath}`, [authorize('admin'), this.save])
-        application.patch(`${this.basePath}/:id`, [this.validateId, authorize('admin'), this.update])
+        application.post(`${this.basePath}`, [ this.save])
+        application.patch(`${this.basePath}/:id`, [this.validateId, this.update])
       }
 }
 
