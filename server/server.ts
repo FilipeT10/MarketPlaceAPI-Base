@@ -6,6 +6,15 @@ import { handleError } from './error.handler'
 import {mergePatchBodyParser} from './merge-patch.parses'
 import {tokenParser} from "../security/token.parser"
 import * as logger from 'morgan'
+
+var corsMiddleware = require('restify-cors-middleware');
+
+var cors = corsMiddleware({
+        preflightMaxAge: 5,
+        origins: ['*'],
+        allowHeaders:['X-App-Version'],
+        exposeHeaders:[]
+      });
 export class Server{
 
         application: restify.Server
@@ -31,20 +40,15 @@ export class Server{
                     version: '1.0.0',
                     
                 })
-                
+                this.application.pre(cors.preflight);
+                this.application.use(cors.actual);
                 this.application.use(restify.plugins.queryParser())
                 this.application.use(restify.plugins.bodyParser())
                 this.application.use(mergePatchBodyParser)
                 this.application.use(tokenParser)
                 this.application.use(logger("dev"))
 
-
-                this.application.use(function (req, res, next) {
-                    res.setHeader('Access-Control-Allow-Origin', '*');
-                    res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, PATCH, OPTIONS');
-                    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-                    next();
-                });
+                
                 for (let router of routers){
                     router.applyRoutes(this.application)
                 }

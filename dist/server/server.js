@@ -8,6 +8,13 @@ const error_handler_1 = require("./error.handler");
 const merge_patch_parses_1 = require("./merge-patch.parses");
 const token_parser_1 = require("../security/token.parser");
 const logger = require("morgan");
+var corsMiddleware = require('restify-cors-middleware');
+var cors = corsMiddleware({
+    preflightMaxAge: 5,
+    origins: ['*'],
+    allowHeaders: ['X-App-Version'],
+    exposeHeaders: []
+});
 class Server {
     initializeDb() {
         mongoose.Promise = global.Promise;
@@ -22,17 +29,13 @@ class Server {
                     name: 'MarketPlace-API-Manager',
                     version: '1.0.0',
                 });
+                this.application.pre(cors.preflight);
+                this.application.use(cors.actual);
                 this.application.use(restify.plugins.queryParser());
                 this.application.use(restify.plugins.bodyParser());
                 this.application.use(merge_patch_parses_1.mergePatchBodyParser);
                 this.application.use(token_parser_1.tokenParser);
                 this.application.use(logger("dev"));
-                this.application.use(function (req, res, next) {
-                    res.setHeader('Access-Control-Allow-Origin', '*');
-                    res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, PATCH, OPTIONS');
-                    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-                    next();
-                });
                 for (let router of routers) {
                     router.applyRoutes(this.application);
                 }
