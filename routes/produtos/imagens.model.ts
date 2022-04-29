@@ -15,7 +15,7 @@ const imagensSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-})
+}, { _id : false });
 
 
 export const Imagem = mongoose.model<Imagem>('Imagem', imagensSchema)
