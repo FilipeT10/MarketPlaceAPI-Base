@@ -18,6 +18,7 @@ export interface Produto extends mongoose.Document{
     imagens: Imagem[],
 }
 
+
 const produtoSchema = new mongoose.Schema({
     name: {
         type: String,
