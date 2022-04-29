@@ -54,9 +54,9 @@ class LojasRouter extends model_router_1.ModelRouter {
         };
         this.saveLoja = (req, resp, next) => {
             let document = new this.model(req.body);
-            /*console.log(document);
-            document.aplications[0].loja = document.id;
-            document.aplications[1].loja = document.id;*/
+            /*console.log(document)
+            document.aplications[0].loja = document.id
+            document.aplications[1].loja = document.id*/
             document.save()
                 .then(this.render(resp, next))
                 .catch(next);

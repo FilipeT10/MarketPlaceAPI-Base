@@ -12,8 +12,10 @@ export interface Produto extends mongoose.Document{
     ingredientes: [string],
     tipo: string,
     quantidade: number
-    ativo: boolean
+    ativo: boolean,
+    data: Date
 }
+let options = { year: 'numeric', month: '2-digit', day: '2-digit' };
 
 const produtoSchema = new mongoose.Schema({
     name: {
@@ -64,8 +66,14 @@ const produtoSchema = new mongoose.Schema({
         type: Boolean,
         required: false,
         default: true
+    },
+    data: { 
+        type: Date, 
+        default: Date.now
     }
 })
+
+
 export interface ProdutoModel extends mongoose.Model<Produto> {
     findByLoja(loja: string, categoria: string, ativo: boolean, projection?: string): Promise<Produto>
 }
