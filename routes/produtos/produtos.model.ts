@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose'
 import {Loja} from '../lojas/lojas.model'
 import {User} from '../users/user.model'
 
+import {Imagem, ImagensSchema} from './imagens.model'
 export interface Produto extends mongoose.Document{
     name: string,
     loja: mongoose.Types.ObjectId | Loja,
@@ -13,9 +14,9 @@ export interface Produto extends mongoose.Document{
     tipo: string,
     quantidade: number
     ativo: boolean,
-    data: Date
+    data: Date,
+    imagens: Imagem[],
 }
-let options = { year: 'numeric', month: '2-digit', day: '2-digit' };
 
 const produtoSchema = new mongoose.Schema({
     name: {
@@ -70,7 +71,12 @@ const produtoSchema = new mongoose.Schema({
     data: { 
         type: Date, 
         default: Date.now
-    }
+    },
+    imagens: {
+        type: [ImagensSchema],
+        required: false,
+        default: []
+    },
 })
 
 

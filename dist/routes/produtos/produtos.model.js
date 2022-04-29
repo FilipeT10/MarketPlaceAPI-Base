@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Produto = void 0;
 const mongoose = require("mongoose");
-let options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+const imagens_model_1 = require("./imagens.model");
 const produtoSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -56,7 +56,12 @@ const produtoSchema = new mongoose.Schema({
     data: {
         type: Date,
         default: Date.now
-    }
+    },
+    imagens: {
+        type: [imagens_model_1.ImagensSchema],
+        required: false,
+        default: []
+    },
 });
 produtoSchema.statics.findByLoja = function (loja, categoria, ativo, projection) {
     /*return this.find({loja}).exec(function(err, users) {
