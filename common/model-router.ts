@@ -70,6 +70,7 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
         .then(this.renderAll(resp, next, {page, count, pageSize: this.pageSize, url: req.url})))
         .catch(next)
     }
+
     findById = (req, resp, next) => {
 
         console.log('Entrou FindByID')
@@ -77,6 +78,7 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
         .then(this.render(resp, next))
         .catch(next)
     }
+    
     save =  (req, resp, next) => {
 
         console.log('Entrou Save')
