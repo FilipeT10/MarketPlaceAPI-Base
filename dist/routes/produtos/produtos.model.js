@@ -59,7 +59,7 @@ const produtoSchema = new mongoose.Schema({
     },
     imagens: {
         type: [imagens_model_1.ImagensSchema],
-        required: false,
+        required: true,
         default: []
     },
 });

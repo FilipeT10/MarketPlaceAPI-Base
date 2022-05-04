@@ -75,7 +75,7 @@ const produtoSchema = new mongoose.Schema({
     },
     imagens: {
         type: [ImagensSchema],
-        required: false,
+        required: true,
         default: []
     },
 })
