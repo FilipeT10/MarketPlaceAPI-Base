@@ -12,7 +12,7 @@ var corsMiddleware = require('restify-cors-middleware');
 var cors = corsMiddleware({
     preflightMaxAge: 5,
     origins: ['*'],
-    allowHeaders: ['X-App-Version'],
+    allowHeaders: ['X-App-Version', 'Authorization'],
     exposeHeaders: []
 });
 class Server {
