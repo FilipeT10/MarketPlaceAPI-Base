@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.lojasRouter = void 0;
 const model_router_1 = require("../../common/model-router");
 const lojas_model_1 = require("./lojas.model");
+const authz_handler_1 = require("../../security/authz.handler");
 const restify_errors_1 = require("restify-errors");
 class LojasRouter extends model_router_1.ModelRouter {
     constructor() {
@@ -68,12 +69,12 @@ class LojasRouter extends model_router_1.ModelRouter {
         return resource;
     }
     applyRoutes(application) {
-        application.get(`${this.basePath}`, this.findAll);
+        application.get(`${this.basePath}`, (0, authz_handler_1.authorize)('admin'), this.findAll);
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById]);
-        application.post(`${this.basePath}`, [this.saveLoja]);
-        application.put(`${this.basePath}/:id`, [this.validateId, this.replace]);
-        application.patch(`${this.basePath}/:id`, [this.validateId, this.update]);
-        application.del(`${this.basePath}/:id`, [this.validateId, this.delete]);
+        application.post(`${this.basePath}`, [(0, authz_handler_1.authorize)('sysAdminMktPlc'), this.saveLoja]);
+        application.put(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('sysAdminMktPlc'), this.replace]);
+        application.patch(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('sysAdminMktPlc'), this.update]);
+        application.del(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('sysAdminMktPlc'), this.delete]);
         /* application.get(`${this.basePath}/:id/aplications`, [this.validateId, authorize('admin'), this.findAplications])
          application.put(`${this.basePath}/:id/aplications`, [this.validateId, authorize('admin'), this.replaceAplications])
          */

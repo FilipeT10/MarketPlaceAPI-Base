@@ -43,7 +43,7 @@ class RestaurantsRouter extends ModelRouter<Restaurant> {
     }
 
  applyRoutes(application: restify.Server){
-
+    /*
      application.get(`${this.basePath}`, this.findAll)
      application.get(`${this.basePath}/:id`, [this.validateId, this.findById])
      application.post(`${this.basePath}`, this.save)
@@ -53,7 +53,7 @@ class RestaurantsRouter extends ModelRouter<Restaurant> {
     
      application.get(`${this.basePath}/:id/menu`, [this.validateId, this.findMenu])
      application.put(`${this.basePath}/:id/menu`, [this.validateId, this.replaceMenu])
-     
+     */
     }
 }
 

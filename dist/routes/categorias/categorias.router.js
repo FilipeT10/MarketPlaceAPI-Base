@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.categoriasRouter = void 0;
 const model_router_1 = require("../../common/model-router");
 const categorias_model_1 = require("./categorias.model");
+const authz_handler_1 = require("../../security/authz.handler");
 class CategoriasRouter extends model_router_1.ModelRouter {
     constructor() {
         super(categorias_model_1.Categoria);
@@ -40,8 +41,8 @@ class CategoriasRouter extends model_router_1.ModelRouter {
     applyRoutes(application) {
         application.get(`${this.basePath}`, [this.findByLoja, this.findAll]);
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById]);
-        application.post(`${this.basePath}`, [this.save]);
-        application.patch(`${this.basePath}/:id`, [this.validateId, this.update]);
+        application.post(`${this.basePath}`, [(0, authz_handler_1.authorize)('admin'), this.save]);
+        application.patch(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.update]);
     }
 }
 exports.categoriasRouter = new CategoriasRouter();
