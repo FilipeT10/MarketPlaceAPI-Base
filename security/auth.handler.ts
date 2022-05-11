@@ -7,7 +7,6 @@ import {environment} from '../common/environment'
 
 export const authenticate: restify.RequestHandler = (req, resp, next) =>{
 
-    console.log('Entrou Authenticate')
     const{email, password} = req.body
 
     User.findByEmail(email, '+password')
@@ -17,7 +16,7 @@ export const authenticate: restify.RequestHandler = (req, resp, next) =>{
             const token = jwt.sign({sub: user.email, iss: 'MarketPlace-API-Manager'},
              environment.security.apiSecret)
 
-             resp.json({name: user.name, email: user.email, accessToken: token})
+             resp.json({id: user._id, name: user.name, profile: profiles[0], accessToken: token})
              return next(false)
         }else{
             return next(new NotAuthorizedError('Invalid Credentials'))
@@ -26,7 +25,6 @@ export const authenticate: restify.RequestHandler = (req, resp, next) =>{
 }
 export const authenticateSGM: restify.RequestHandler = (req, resp, next) =>{
 
-    console.log('Entrou Authenticate SGM')
     const{email, password} = req.body
 
     User.findByEmail(email, '+password')
@@ -38,7 +36,7 @@ export const authenticateSGM: restify.RequestHandler = (req, resp, next) =>{
                 const token = jwt.sign({sub: user.email, iss: 'MarketPlace-API-Manager'},
                 environment.security.apiSecret)
 
-                resp.json({name: user.name, email: user.email, accessToken: token})
+                resp.json({id: user._id, name: user.name, profile: profiles[0], accessToken: token})
                 return next(false)
             }else{
                 

@@ -6,14 +6,13 @@ const user_model_1 = require("../routes/users/user.model");
 const jwt = require("jsonwebtoken");
 const environment_1 = require("../common/environment");
 const authenticate = (req, resp, next) => {
-    console.log('Entrou Authenticate');
     const { email, password } = req.body;
     user_model_1.User.findByEmail(email, '+password')
         .then(user => {
         if (user && user.matches(password)) {
             //gerar token
             const token = jwt.sign({ sub: user.email, iss: 'MarketPlace-API-Manager' }, environment_1.environment.security.apiSecret);
-            resp.json({ name: user.name, email: user.email, accessToken: token });
+            resp.json({ id: user._id, name: user.name, profile: profiles[0], accessToken: token });
             return next(false);
         }
         else {
@@ -23,7 +22,6 @@ const authenticate = (req, resp, next) => {
 };
 exports.authenticate = authenticate;
 const authenticateSGM = (req, resp, next) => {
-    console.log('Entrou Authenticate SGM');
     const { email, password } = req.body;
     user_model_1.User.findByEmail(email, '+password')
         .then(user => {
@@ -32,7 +30,7 @@ const authenticateSGM = (req, resp, next) => {
             if (profiles[0] == "admin" || profiles[0] == "sysAdminMktPlc") {
                 //gerar token
                 const token = jwt.sign({ sub: user.email, iss: 'MarketPlace-API-Manager' }, environment_1.environment.security.apiSecret);
-                resp.json({ name: user.name, email: user.email, accessToken: token });
+                resp.json({ id: user._id, name: user.name, profile: profiles[0], accessToken: token });
                 return next(false);
             }
             else {
