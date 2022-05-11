@@ -1,9 +1,8 @@
-/*import * as restify from 'restify'
+import * as restify from 'restify'
 import { ForbiddenError } from 'restify-errors'
 
 export const authorize: (...profiles: string[])=> restify.RequestHandler = (...profiles)=>{
-
-    console.log('Entrou Authororize')
+    
     return (req, resp, next)=>{
         if(req.authenticated !== undefined && req.authenticated.hasAny(...profiles)){
             next()
@@ -11,4 +10,4 @@ export const authorize: (...profiles: string[])=> restify.RequestHandler = (...p
             next(new ForbiddenError('Permission denied'))
         }
     }
-}*/
+}
