@@ -36,7 +36,7 @@ export const authenticateSGM: restify.RequestHandler = (req, resp, next) =>{
                 const token = jwt.sign({sub: user.email, iss: 'MarketPlace-API-Manager'},
                 environment.security.apiSecret)
 
-                resp.json({id: user._id, name: user.name, profile: profiles[0], accessToken: token})
+                resp.json({id: user._id, loja: user.loja, name: user.name, profile: profiles[0], accessToken: token})
                 return next(false)
             }else{
                 

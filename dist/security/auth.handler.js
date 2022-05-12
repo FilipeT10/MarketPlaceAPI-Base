@@ -30,7 +30,7 @@ const authenticateSGM = (req, resp, next) => {
             if (profiles[0] == "admin" || profiles[0] == "sysAdminMktPlc") {
                 //gerar token
                 const token = jwt.sign({ sub: user.email, iss: 'MarketPlace-API-Manager' }, environment_1.environment.security.apiSecret);
-                resp.json({ id: user._id, name: user.name, profile: profiles[0], accessToken: token });
+                resp.json({ id: user._id, loja: user.loja, name: user.name, profile: profiles[0], accessToken: token });
                 return next(false);
             }
             else {
