@@ -39,7 +39,6 @@ const userSchema = new mongoose.Schema({
     loja: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Loja',
-        required: true
     },
     profiles: {
         type: [String],
