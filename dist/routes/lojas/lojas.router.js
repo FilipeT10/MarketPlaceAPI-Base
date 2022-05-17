@@ -69,7 +69,7 @@ class LojasRouter extends model_router_1.ModelRouter {
         return resource;
     }
     applyRoutes(application) {
-        application.get(`${this.basePath}`, (0, authz_handler_1.authorize)('admin'), this.findAll);
+        application.get(`${this.basePath}`, (0, authz_handler_1.authorize)('sysAdminMktPlc'), this.findAll);
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById]);
         application.post(`${this.basePath}`, [(0, authz_handler_1.authorize)('sysAdminMktPlc'), this.saveLoja]);
         application.put(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('sysAdminMktPlc'), this.replace]);
