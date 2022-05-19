@@ -19,13 +19,9 @@ const lojaSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    apiName: {
-        type: String,
-        required: true
-    },
     aplications: {
         type: [AplicationsSchema],
-        required: false,
+        required: true,
         default: []
     },
     tipoLoja: {

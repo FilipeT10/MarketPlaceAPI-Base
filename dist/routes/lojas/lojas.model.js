@@ -8,13 +8,9 @@ const lojaSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    apiName: {
-        type: String,
-        required: true
-    },
     aplications: {
         type: [aplications_model_1.AplicationsSchema],
-        required: false,
+        required: true,
         default: []
     },
     tipoLoja: {

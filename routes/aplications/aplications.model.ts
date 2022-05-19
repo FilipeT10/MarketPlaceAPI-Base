@@ -5,7 +5,6 @@ export interface Aplication extends mongoose.Document{
     name: string,
     tipo: string
     ativo: boolean
-    loja: mongoose.Types.ObjectId | Loja,
 }
 
 const aplicationsSchema = new mongoose.Schema({
@@ -23,11 +22,6 @@ const aplicationsSchema = new mongoose.Schema({
         required: false,
         default: true
     },
-    loja: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Loja',
-        required: true
-    }
 })
 
 

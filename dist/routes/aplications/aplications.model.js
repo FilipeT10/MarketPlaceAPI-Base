@@ -17,11 +17,6 @@ const aplicationsSchema = new mongoose.Schema({
         required: false,
         default: true
     },
-    loja: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Loja',
-        required: true
-    }
 });
 exports.Aplication = mongoose.model('Aplication', aplicationsSchema);
 exports.AplicationsSchema = aplicationsSchema;
