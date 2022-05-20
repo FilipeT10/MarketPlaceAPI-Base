@@ -8,7 +8,7 @@ class ModelRouter extends router_1.Router {
     constructor(model) {
         super();
         this.model = model;
-        this.pageSize = 4;
+        this.pageSize = 999999999;
         this.validateId = (req, resp, next) => {
             console.log('Entrou Validate ID');
             if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
