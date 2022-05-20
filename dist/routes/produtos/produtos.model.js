@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Produto = void 0;
 const mongoose = require("mongoose");
-const imagens_model_1 = require("./imagens.model");
+const imagens_model_1 = require("../models/imagens.model");
 const produtoSchema = new mongoose.Schema({
     name: {
         type: String,

@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose'
 import {Loja} from '../lojas/lojas.model'
 import {User} from '../users/user.model'
 
-import {Imagem, ImagensSchema} from './imagens.model'
+import {Imagem, ImagensSchema} from '../models/imagens.model'
 export interface Produto extends mongoose.Document{
     name: string,
     loja: mongoose.Types.ObjectId | Loja,

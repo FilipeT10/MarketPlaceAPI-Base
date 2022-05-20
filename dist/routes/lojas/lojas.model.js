@@ -21,6 +21,10 @@ const lojaSchema = new mongoose.Schema({
         type: Boolean,
         required: false,
         default: true
-    }
+    },
+    logo: {
+        type: ImagensSchema,
+        required: false,
+    },
 });
 exports.Loja = mongoose.model('Loja', lojaSchema);
