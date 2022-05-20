@@ -1,4 +1,4 @@
-import { Imagem } from './../models/imagens.model';
+import { Imagem, ImagensSchema } from './../models/imagens.model';
 import * as mongoose from 'mongoose'
 import {Aplication, AplicationsSchema} from '../aplications/aplications.model'
 
@@ -11,8 +11,6 @@ export interface Loja extends mongoose.Document {
     ativo: boolean
     logo: Imagem,
 }
-
-
 
 
 
@@ -34,11 +32,11 @@ const lojaSchema = new mongoose.Schema({
         type: Boolean,
         required: false,
         default: true
-    }
+    },
     logo: {
         type: ImagensSchema,
-        required: false,
-    },
+        required: false
+    }
 })
 
 export const Loja = mongoose.model<Loja>('Loja', lojaSchema)

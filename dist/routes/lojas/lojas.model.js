@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Loja = void 0;
+const imagens_model_1 = require("./../models/imagens.model");
 const mongoose = require("mongoose");
 const aplications_model_1 = require("../aplications/aplications.model");
 const lojaSchema = new mongoose.Schema({
@@ -23,8 +24,8 @@ const lojaSchema = new mongoose.Schema({
         default: true
     },
     logo: {
-        type: ImagensSchema,
-        required: false,
-    },
+        type: imagens_model_1.ImagensSchema,
+        required: false
+    }
 });
 exports.Loja = mongoose.model('Loja', lojaSchema);
