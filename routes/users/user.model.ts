@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt'
 import {environment} from '../../common/environment'
 import {Loja} from '../lojas/lojas.model'
 
-
+import { Endereco, EnderecosSchema } from './../models/enderecos.model ';
 
 
 export interface User extends mongoose.Document {
@@ -17,6 +17,7 @@ export interface User extends mongoose.Document {
     pontos: number,
     loja: mongoose.Types.ObjectId | Loja,
     profiles: string[],
+    enderecos: Endereco[]
     matches(password: string): boolean,
     hasAny(...profiles: string[]): boolean
 }
@@ -45,7 +46,7 @@ const userSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
-        required: true,
+        required: false,
         enum: ["Male", "Female", ""]
     },
     cpf: {
@@ -68,6 +69,11 @@ const userSchema = new mongoose.Schema({
     loja: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Loja',
+    },
+    enderecos: {
+        type: [EnderecosSchema],
+        required: true,
+        default: []
     },
     profiles: {
         type: [String],

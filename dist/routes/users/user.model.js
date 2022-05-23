@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const validator_1 = require("../../common/validator");
 const bcrypt = require("bcrypt");
 const environment_1 = require("../../common/environment");
+const enderecos_model_1 = require("./../models/enderecos.model ");
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -25,7 +26,7 @@ const userSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
-        required: true,
+        required: false,
         enum: ["Male", "Female", ""]
     },
     cpf: {
@@ -48,6 +49,11 @@ const userSchema = new mongoose.Schema({
     loja: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Loja',
+    },
+    enderecos: {
+        type: [enderecos_model_1.EnderecosSchema],
+        required: true,
+        default: []
     },
     profiles: {
         type: [String],
