@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
-        required: false,
+        required: true,
         enum: ["Male", "Female", ""]
     },
     cpf: {
@@ -36,13 +36,22 @@ const userSchema = new mongoose.Schema({
             message: '{PATH}: Invalid CPF ({VALUE})'
         }
     },
+    pontos: {
+        type: Number,
+        required: false,
+        default: 0
+    },
+    data: {
+        type: Date,
+        default: Date.now
+    },
     loja: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Loja',
     },
     profiles: {
         type: [String],
-        required: false
+        required: true
     }
 });
 userSchema.statics.findByEmail = function (email, projection) {

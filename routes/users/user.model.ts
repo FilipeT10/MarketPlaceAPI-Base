@@ -13,6 +13,8 @@ export interface User extends mongoose.Document {
     password: string,
     cpf: string,
     gender: string,
+    data: Date,
+    pontos: number,
     loja: mongoose.Types.ObjectId | Loja,
     profiles: string[],
     matches(password: string): boolean,
@@ -24,7 +26,6 @@ export interface UserModel extends mongoose.Model<User> {
 }
 
 const userSchema = new mongoose.Schema({
-
     name:{ 
         type: String,
         required: true,
@@ -44,7 +45,7 @@ const userSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
-        required: false,
+        required: true,
         enum: ["Male", "Female", ""]
     },
     cpf: {
@@ -55,13 +56,22 @@ const userSchema = new mongoose.Schema({
             message: '{PATH}: Invalid CPF ({VALUE})'
         }
     },
+    pontos:{
+        type: Number,
+        required: false,
+        default: 0
+    },
+    data: { 
+        type: Date, 
+        default: Date.now
+    },
     loja: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Loja',
     },
     profiles: {
         type: [String],
-        required: false
+        required: true
     }
 })
 

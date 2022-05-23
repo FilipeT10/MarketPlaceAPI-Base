@@ -46,7 +46,7 @@ const produtoSchema = new mongoose.Schema({
     },
     quantidade: {
         type: Number,
-        required: false
+        required: true
     },
     ativo: {
         type: Boolean,
