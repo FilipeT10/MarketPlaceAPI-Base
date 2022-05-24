@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const pedidos_router_1 = require("./routes/pedidos/pedidos.router");
+const tipopagamento_router_1 = require("./routes/tipopagamento/tipopagamento.router");
+const subcategorias_router_1 = require("./routes/subcategorias/subcategorias.router");
 const server_1 = require("./server/server");
 const users_router_1 = require("./routes/users/users.router");
-const restaurants_router_1 = require("./routes/restaurants/restaurants.router");
-const reviews_router_1 = require("./routes/reviews/reviews.router");
 const main_router_1 = require("./main.router");
 const lojas_router_1 = require("./routes/lojas/lojas.router");
 const aplications_router_1 = require("./routes/aplications/aplications.router");
@@ -13,12 +14,13 @@ const server = new server_1.Server();
 server.bootstrap([
     main_router_1.mainRouter,
     users_router_1.usersRouter,
-    restaurants_router_1.restaurantsRouter,
-    reviews_router_1.reviewsRouter,
     lojas_router_1.lojasRouter,
     aplications_router_1.aplicationsRouter,
     produtos_router_1.produtosRouter,
-    categorias_router_1.categoriasRouter
+    categorias_router_1.categoriasRouter,
+    subcategorias_router_1.subcategoriasRouter,
+    tipopagamento_router_1.tipoPagamentoRouter,
+    pedidos_router_1.pedidosRouter
 ]).then(server => {
     console.log('Server is listening on:', server.application.address());
 }).catch(error => {

@@ -1,3 +1,5 @@
+import { Categoria } from './../categorias/categorias.model';
+import { SubCategoria, SubCategoriaSchema } from './../subcategorias/subcategorias.model';
 import * as mongoose from 'mongoose'
 import {Loja} from '../lojas/lojas.model'
 import {User} from '../users/user.model'
@@ -6,7 +8,7 @@ import {Imagem, ImagensSchema} from '../models/imagens.model'
 export interface Produto extends mongoose.Document{
     name: string,
     loja: mongoose.Types.ObjectId | Loja,
-    categoria: mongoose.Types.ObjectId | Loja,
+    categoria: mongoose.Types.ObjectId | Categoria,
     preco: string,
     tamanhos: [string],
     cores: [string],
@@ -16,6 +18,7 @@ export interface Produto extends mongoose.Document{
     ativo: boolean,
     data: Date,
     imagens: Imagem[],
+    subcategorias: SubCategoria[],
 }
 
 
@@ -78,6 +81,11 @@ const produtoSchema = new mongoose.Schema({
         required: true,
         default: []
     },
+    subcategorias: {
+        type: [SubCategoriaSchema],
+        required: true,
+        default: []
+    }
 })
 
 

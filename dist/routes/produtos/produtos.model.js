@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Produto = void 0;
+const subcategorias_model_1 = require("./../subcategorias/subcategorias.model");
 const mongoose = require("mongoose");
 const imagens_model_1 = require("../models/imagens.model");
 const produtoSchema = new mongoose.Schema({
@@ -62,6 +63,11 @@ const produtoSchema = new mongoose.Schema({
         required: true,
         default: []
     },
+    subcategorias: {
+        type: [subcategorias_model_1.SubCategoriaSchema],
+        required: true,
+        default: []
+    }
 });
 produtoSchema.statics.findByLoja = function (loja, categoria, ativo, projection) {
     /*return this.find({loja}).exec(function(err, users) {
