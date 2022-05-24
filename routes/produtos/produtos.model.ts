@@ -13,7 +13,6 @@ export interface Produto extends mongoose.Document{
     tamanhos: [string],
     cores: [string],
     ingredientes: [string],
-    tipo: string,
     quantidade: number
     ativo: boolean,
     data: Date,
@@ -55,11 +54,6 @@ const produtoSchema = new mongoose.Schema({
     },
     ingredientes: {
         type: [String],
-        required: true,
-        maxlength: 20
-    },
-    tipo: {
-        type: String,
         required: true,
         maxlength: 20
     },

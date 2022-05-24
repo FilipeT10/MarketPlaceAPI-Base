@@ -40,11 +40,6 @@ const produtoSchema = new mongoose.Schema({
         required: true,
         maxlength: 20
     },
-    tipo: {
-        type: String,
-        required: true,
-        maxlength: 20
-    },
     quantidade: {
         type: Number,
         required: true

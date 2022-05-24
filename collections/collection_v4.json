@@ -1,0 +1,1862 @@
+{
+	"info": {
+		"_postman_id": "7739569d-65ab-4b9e-a849-2817c45d472b",
+		"name": "MarketPlaceMenager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12194427"
+	},
+	"item": [
+		{
+			"name": "API-Users",
+			"item": [
+				{
+					"name": "Obter Usuário",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}users",
+							"host": [
+								"{{MarketPlaceLocal}}users"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter Usuário ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/users/613d75bf25009124616d1d17",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"users",
+								"613d75bf25009124616d1d17"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Usuário",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}users/628bf31cd6308a1cbd575926",
+							"host": [
+								"{{MarketPlaceLocal}}users"
+							],
+							"path": [
+								"628bf31cd6308a1cbd575926"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar Usuário",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "name",
+								"value": "Filipe Torres",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "email",
+								"value": "fili.pet81@gmail.com",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "cpf",
+								"value": "07244537174",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Filipe",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}users/613d75bf25009124616d1d17",
+							"host": [
+								"{{MarketPlaceLocal}}users"
+							],
+							"path": [
+								"613d75bf25009124616d1d17"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar Usuario Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Admin Sem Loja",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "adminsemloja@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "abc123",
+									"type": "text"
+								},
+								{
+									"key": "profiles",
+									"value": "admin",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}users",
+							"host": [
+								"{{MarketPlaceLocal}}users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar Cliente na loja",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Cliente com endereco\",\n    \"email\": \"endereco2@gmail.com\",\n    \"password\": \"abc123\",\n    \"cpf\": \"07244537174\",\n    \"gender\": \"Male\",\n    \"enderecos\": [\n        {\n        \"cep\": \"00000-000\",\n        \"numero\": 26,\n        \"complemento\": \"00 00\",\n        \"bairro\": \"bairro\",\n        \"referencia\": \"proximo a\",\n        \"estado\": \"DF\",\n        \"cidade\": \"Brasília\"\n        },\n         {\n        \"cep\": \"10000-000\",\n        \"numero\": 26,\n        \"complemento\": \"00 00\",\n        \"bairro\": \"bairro\",\n        \"referencia\": \"proximo a\",\n        \"estado\": \"DF\",\n        \"cidade\": \"Brasília\"\n        }\n    ],\n    \"loja\": \"6140c36a383118382e2a7d8f\",\n    \"profiles\": \"cliente\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}users",
+							"host": [
+								"{{MarketPlaceLocal}}users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Autenticar Usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "tecsoftwar81@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "abc123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}users/authenticate",
+							"host": [
+								"{{MarketPlaceLocal}}users"
+							],
+							"path": [
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar Usuário Inteiro",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "name",
+								"value": "Filipe Torres",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "email",
+								"value": "fili.pet81@gmail.com",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "cpf",
+								"value": "07244537174",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Filipe Torres",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "fili.pet81@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "abc123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/users/613d7ad03bc817287dee5cd4",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"users",
+								"613d7ad03bc817287dee5cd4"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar Admin da Loja",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Cliente Loja 1\",\n    \"email\": \"cliente@gmail.com\",\n    \"password\": \"abc123\",\n    \"cpf\": \"07244537174\",\n    \"gender\": \"Male\",\n    \"loja\": \"6140c36a383118382e2a7d8f\",\n    \"profiles\": \"cliente\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/users",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API-Server",
+			"item": [
+				{
+					"name": "info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}info",
+							"host": [
+								"{{MarketPlaceLocal}}info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Routes",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API-LOJAS",
+			"item": [
+				{
+					"name": "Obter Lojas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}lojas",
+							"host": [
+								"{{MarketPlaceLocal}}lojas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar Lojas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Loja Teste 3\",\n    \"apiName\": \"teste3\",\n    \"tipoLoja\": \"Tênis\",\n    \"aplications\": [\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/lojas",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"lojas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter Lojas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/lojas",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"lojas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter Loja ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/lojas/6140c36a383118382e2a7d8f",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"lojas",
+								"6140c36a383118382e2a7d8f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter Aplications",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/lojas/6140c36a383118382e2a7d8f/aplications",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"lojas",
+								"6140c36a383118382e2a7d8f",
+								"aplications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar Lojas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZWNzb2Z0d2FyODFAZ21haWwuY29tIiwiaXNzIjoiTWFya2V0UGxhY2UtQVBJLU1hbmFnZXIiLCJpYXQiOjE2NDgxNzUyMDl9.YCMZ6DNGNGPkfflsAppewd536eCgz0TY5VnSnShGcKk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "name",
+								"value": "Filipe Torres",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "email",
+								"value": "fili.pet81@gmail.com",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "cpf",
+								"value": "07244537174",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Loja Teste 1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://[::]:3000/lojas/6140c36a383118382e2a7d8f",
+							"protocol": "http",
+							"host": [
+								"[::]"
+							],
+							"port": "3000",
+							"path": [
+								"lojas",
+								"6140c36a383118382e2a7d8f"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar Lojas Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "name",
+								"value": "Filipe Torres",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "email",
+								"value": "fili.pet81@gmail.com",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "cpf",
+								"value": "07244537174",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Loja Teste 1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/lojas/6140c36a383118382e2a7d8f",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"lojas",
+								"6140c36a383118382e2a7d8f"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API-LOJAS NOVO",
+			"item": [
+				{
+					"name": "Obter Lojas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}lojas",
+							"host": [
+								"{{MarketPlaceLocal}}lojas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar Lojas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Loja Teste 2\",\n    \"apiName\": \"teste\",\n    \"tipoLoja\": \"Tênis\",\n    \"aplications\": [\n        {\n        \"name\": \"App Loja Teste\",\n        \"tipo\": \"App\"\n        },\n        {\n        \"name\": \"Site Loja Teste\",\n        \"tipo\": \"Site\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}lojas",
+							"host": [
+								"{{MarketPlaceLocal}}lojas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter Lojas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/lojas",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"lojas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter Loja ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/lojas/6140c36a383118382e2a7d8f",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"lojas",
+								"6140c36a383118382e2a7d8f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter Aplications",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/lojas/6140c36a383118382e2a7d8f/aplications",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"lojas",
+								"6140c36a383118382e2a7d8f",
+								"aplications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar Lojas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "name",
+								"value": "Filipe Torres",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "email",
+								"value": "fili.pet81@gmail.com",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "cpf",
+								"value": "07244537174",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Loja Roupas",
+									"type": "text"
+								},
+								{
+									"key": "apiName",
+									"value": "roupas",
+									"type": "text"
+								},
+								{
+									"key": "tipoLoja",
+									"value": "Roupas",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/lojas/6144d423625a8b5b633cd0f5",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"lojas",
+								"6144d423625a8b5b633cd0f5"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar Lojas Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "name",
+								"value": "Filipe Torres",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "email",
+								"value": "fili.pet81@gmail.com",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "cpf",
+								"value": "07244537174",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Loja Teste 1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/lojas/6140c36a383118382e2a7d8f",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"lojas",
+								"6140c36a383118382e2a7d8f"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API-CATEGORIAS",
+			"item": [
+				{
+					"name": "Cadastrar Categorias",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TokenAdminLojaProd\n}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Nova Categoria\",\n    \"loja\": \"61663f593ad92700047d5e1f\",\n    \"ativo\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}categorias",
+							"host": [
+								"{{MarketPlaceLocal}}categorias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter todas categorias",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}categorias",
+							"host": [
+								"{{MarketPlaceLocal}}categorias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter Categorias por loja",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}categorias?loja=6144d423625a8b5b633cd0f5&ativo=true",
+							"host": [
+								"{{MarketPlaceLocal}}categorias"
+							],
+							"query": [
+								{
+									"key": "loja",
+									"value": "6144d423625a8b5b633cd0f5"
+								},
+								{
+									"key": "ativo",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar Categorias",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Categoria Editada",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}categorias/6144dd1677ef8a6290073dad",
+							"host": [
+								"{{MarketPlaceLocal}}categorias"
+							],
+							"path": [
+								"6144dd1677ef8a6290073dad"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ativar Categorias",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "ativo",
+									"value": "false",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}categorias/6144dd1677ef8a6290073dad",
+							"host": [
+								"{{MarketPlaceLocal}}categorias"
+							],
+							"path": [
+								"6144dd1677ef8a6290073dad"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter categoria ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}categorias/614502604be45f1a505bcb07",
+							"host": [
+								"{{MarketPlaceLocal}}categorias"
+							],
+							"path": [
+								"614502604be45f1a505bcb07"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API-PRODUTOS",
+			"item": [
+				{
+					"name": "Cadastrar Produtos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Produto Teste Com Foto\",\n    \"loja\": \"61663f593ad92700047d5e1f\",\n    \"categoria\": \"6144dd1677ef8a6290073dad\",\n    \"preco\": \"15.99\",\n    \"tamanhos\": [\"P\", \"M\"],\n    \"cores\": [\"#333333\", \"#666666\"],\n    \"ingredientes\": [],\n    \"imagens\": [\n        { \"base\": \"data:image/jpeg;base64,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\",\n            \"contentType\": \"image/jpeg\"\n        }\n    ],\n    \"tipo\": \"Roupa\",\n    \"quantidade\": 0,\n    \"ativo\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}produtos",
+							"host": [
+								"{{MarketPlaceLocal}}produtos"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Produto 1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter todos produtos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}produtos",
+							"host": [
+								"{{MarketPlaceLocal}}produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter Produtos por loja",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}produtos?loja=6144d423625a8b5b633cd0f5&ativo=true",
+							"host": [
+								"{{MarketPlaceLocal}}produtos"
+							],
+							"query": [
+								{
+									"key": "loja",
+									"value": "6144d423625a8b5b633cd0f5"
+								},
+								{
+									"key": "ativo",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar Produtos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Produto Editado",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}produtos/6148e6b55af5c142241744b7",
+							"host": [
+								"{{MarketPlaceLocal}}produtos"
+							],
+							"path": [
+								"6148e6b55af5c142241744b7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ativar Produtos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "ativo",
+									"value": "true",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}produtos/6148e6b55af5c142241744b7",
+							"host": [
+								"{{MarketPlaceLocal}}produtos"
+							],
+							"path": [
+								"6148e6b55af5c142241744b7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter produto ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/produtos/626bfac32eb84b2f54156f33",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"produtos",
+								"626bfac32eb84b2f54156f33"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter Produtos por loja e Categoria",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}/produtos?loja=6144d423625a8b5b633cd0f5&ativo=false&categoria=6144dd1677ef8a6290073dad",
+							"host": [
+								"{{MarketPlaceLocal}}"
+							],
+							"path": [
+								"produtos"
+							],
+							"query": [
+								{
+									"key": "loja",
+									"value": "6144d423625a8b5b633cd0f5"
+								},
+								{
+									"key": "ativo",
+									"value": "false"
+								},
+								{
+									"key": "categoria",
+									"value": "6144dd1677ef8a6290073dad"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API-SUBCATEGORIAS",
+			"item": [
+				{
+					"name": "Cadastrar SUBCategorias",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TokenAdminLojaProd\n}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Sub Categoria infantil\",\n    \"loja\": \"61663f593ad92700047d5e1f\",\n    \"categoria\": \"616640633ad92700047d5e23\",\n    \"ativo\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}subcategorias",
+							"host": [
+								"{{MarketPlaceLocal}}subcategorias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter todas subcategorias",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}subcategorias",
+							"host": [
+								"{{MarketPlaceLocal}}subcategorias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter SUBCategorias por loja",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}subcategorias?loja=6144d423625a8b5b633cd0f5&ativo=true",
+							"host": [
+								"{{MarketPlaceLocal}}subcategorias"
+							],
+							"query": [
+								{
+									"key": "loja",
+									"value": "6144d423625a8b5b633cd0f5"
+								},
+								{
+									"key": "ativo",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar SubCategorias",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Sub Categoria Editada",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}subcategorias/6144dd1677ef8a6290073dad",
+							"host": [
+								"{{MarketPlaceLocal}}subcategorias"
+							],
+							"path": [
+								"6144dd1677ef8a6290073dad"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ativar SubCategorias",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "ativo",
+									"value": "false",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}subcategorias/628cdbf780f71e18a223d8af",
+							"host": [
+								"{{MarketPlaceLocal}}subcategorias"
+							],
+							"path": [
+								"628cdbf780f71e18a223d8af"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter subcategoria ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}subcategorias/628cdbf780f71e18a223d8af",
+							"host": [
+								"{{MarketPlaceLocal}}subcategorias"
+							],
+							"path": [
+								"628cdbf780f71e18a223d8af"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API-PEDIDOS",
+			"item": [
+				{
+					"name": "Cadastrar PEDIDOS",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": \"6234955b58ec4a0004934cb9\",\n    \"loja\": \"6140c36a383118382e2a7d8f\",\n    \"valor\": \"120.00\",\n    \"status\": \"01\",\n    \"pontos\": 0,\n    \"endereco\": {\n        \"cep\": \"00000-000\",\n        \"numero\": 26,\n        \"complemento\": \"00 00\",\n        \"bairro\": \"bairro\",\n        \"referencia\": \"proximo a\",\n        \"estado\": \"DF\",\n        \"cidade\": \"Brasília\"\n        },\n    \"tipoPagamento\": \"628cea3ca684152a074a50d7\",\n    \"produtos\": [\n        {\n            \"name\": \"string\",\n            \"preco\": \"20.00\",\n            \"quantidade\": 3,\n            \"produto\": \"628cf4e9aff0e436a6205e35\"\n        },\n         {\n            \"name\": \"string\",\n            \"preco\": \"20.00\",\n            \"quantidade\": 3,\n            \"produto\": \"628cf4e9aff0e436a6205e35\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}pedidos",
+							"host": [
+								"{{MarketPlaceLocal}}pedidos"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Produto 1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter todos Pedidos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}pedidos",
+							"host": [
+								"{{MarketPlaceLocal}}pedidos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter Pedidos por loja",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}pedidos?loja=6140c36a383118382e2a7d8f",
+							"host": [
+								"{{MarketPlaceLocal}}pedidos"
+							],
+							"query": [
+								{
+									"key": "loja",
+									"value": "6140c36a383118382e2a7d8f"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar Pedidos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Produto Editado",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}pedidos/628ceb38b8bec62cba59a4b0",
+							"host": [
+								"{{MarketPlaceLocal}}pedidos"
+							],
+							"path": [
+								"628ceb38b8bec62cba59a4b0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ativar Pedidos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "ativo",
+									"value": "true",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}pedidos/628ceb38b8bec62cba59a4b0",
+							"host": [
+								"{{MarketPlaceLocal}}pedidos"
+							],
+							"path": [
+								"628ceb38b8bec62cba59a4b0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter pedido ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}pedidos/628ceb38b8bec62cba59a4b0",
+							"host": [
+								"{{MarketPlaceLocal}}pedidos"
+							],
+							"path": [
+								"628ceb38b8bec62cba59a4b0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter Pedidos por loja e User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}pedidos?user=6234955b58ec4a0004934cb9",
+							"host": [
+								"{{MarketPlaceLocal}}pedidos"
+							],
+							"query": [
+								{
+									"key": "user",
+									"value": "6234955b58ec4a0004934cb9"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API-TIPOPAGAMENTO",
+			"item": [
+				{
+					"name": "Obter TipoPagamentos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}tipopagamentos",
+							"host": [
+								"{{MarketPlaceLocal}}tipopagamentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar TipoPagamentos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Cartão de débito\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}tipopagamentos",
+							"host": [
+								"{{MarketPlaceLocal}}tipopagamentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter TipoPagamentos ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MarketPlaceLocal}}tipopagamentos/628cea3ca684152a074a50d7",
+							"host": [
+								"{{MarketPlaceLocal}}tipopagamentos"
+							],
+							"path": [
+								"628cea3ca684152a074a50d7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar Lojas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "name",
+								"value": "Filipe Torres",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "email",
+								"value": "fili.pet81@gmail.com",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "cpf",
+								"value": "07244537174",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Cartão de débito",
+									"type": "text"
+								},
+								{
+									"key": "apiName",
+									"value": "roupas",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "tipoLoja",
+									"value": "Roupas",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MarketPlaceLocal}}tipopagamentos/628cea3ca684152a074a50d7",
+							"host": [
+								"{{MarketPlaceLocal}}tipopagamentos"
+							],
+							"path": [
+								"628cea3ca684152a074a50d7"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -1,3 +1,4 @@
+import { ProdutoPedido, ProdutoPedidoSchema } from './../models/produtopedido.model';
 import { TipoPagamento } from './../tipopagamento/tipopagamento.model';
 import { SubCategoria, SubCategoriaSchema } from './../subcategorias/subcategorias.model';
 import * as mongoose from 'mongoose'
@@ -14,7 +15,8 @@ export interface Pedido extends mongoose.Document{
     status: string,
     pontos: number,
     data: Date,
-    endereco: Endereco
+    endereco: Endereco,
+    produtos: ProdutoPedido[]
 }
 
 
@@ -55,6 +57,11 @@ const pedidoSchema = new mongoose.Schema({
     endereco: {
         type: EnderecosSchema,
         required: true
+    },
+    produtos: {
+        type: [ProdutoPedidoSchema],
+        required: true,
+        default: []
     },
 })
 
