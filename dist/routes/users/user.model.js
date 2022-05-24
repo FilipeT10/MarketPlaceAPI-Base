@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
+const produtopedido_model_1 = require("./../models/produtopedido.model");
 const mongoose = require("mongoose");
 const validator_1 = require("../../common/validator");
 const bcrypt = require("bcrypt");
@@ -58,6 +59,17 @@ const userSchema = new mongoose.Schema({
     profiles: {
         type: [String],
         required: true
+    },
+    carrinho: {
+        type: [produtopedido_model_1.ProdutoPedidoSchema],
+        required: true,
+        default: []
+    },
+    pedidos: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Pedido',
+        required: true,
+        default: []
     }
 });
 userSchema.statics.findByEmail = function (email, projection) {

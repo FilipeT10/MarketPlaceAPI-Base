@@ -1,3 +1,5 @@
+import { ProdutoPedido, ProdutoPedidoSchema } from './../models/produtopedido.model';
+import { Pedido, PedidoSchema } from './../pedidos/pedidos.model';
 import * as mongoose from 'mongoose'
 import {validateCPF} from '../../common/validator'
 import * as bcrypt from 'bcrypt'
@@ -17,7 +19,9 @@ export interface User extends mongoose.Document {
     pontos: number,
     loja: mongoose.Types.ObjectId | Loja,
     profiles: string[],
-    enderecos: Endereco[]
+    enderecos: Endereco[],
+    carrinho: ProdutoPedido[],
+    pedidos: mongoose.Types.ObjectId[] | Pedido[],
     matches(password: string): boolean,
     hasAny(...profiles: string[]): boolean
 }
@@ -78,6 +82,17 @@ const userSchema = new mongoose.Schema({
     profiles: {
         type: [String],
         required: true
+    },
+    carrinho: {
+        type: [ProdutoPedidoSchema],
+        required: true,
+        default: []
+    },
+    pedidos: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Pedido',
+        required: true,
+        default: []
     }
 })
 

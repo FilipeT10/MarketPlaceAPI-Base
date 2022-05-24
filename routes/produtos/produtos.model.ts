@@ -17,7 +17,7 @@ export interface Produto extends mongoose.Document{
     ativo: boolean,
     data: Date,
     imagens: Imagem[],
-    subcategorias: SubCategoria[],
+    subcategorias: mongoose.Types.ObjectId[] | SubCategoria[],
 }
 
 
@@ -76,7 +76,8 @@ const produtoSchema = new mongoose.Schema({
         default: []
     },
     subcategorias: {
-        type: [SubCategoriaSchema],
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'SubCategoria',
         required: true,
         default: []
     }
