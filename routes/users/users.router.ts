@@ -38,6 +38,7 @@ class UsersRouter extends ModelRouter<User> {
 
         application.get(`${this.basePath}`, [
             authorize('sysAdminMktPlc'),
+            authorize('admin'),
             this.findByEmail,
             this.findAll])
         application.get(`${this.basePath}/:id`, [this.validateId, authorize('admin'), authorize('sysAdminMktPlc'), this.findById])

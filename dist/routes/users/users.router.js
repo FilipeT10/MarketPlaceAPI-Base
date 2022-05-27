@@ -33,6 +33,7 @@ class UsersRouter extends model_router_1.ModelRouter {
     applyRoutes(application) {
         application.get(`${this.basePath}`, [
             (0, authz_handler_1.authorize)('sysAdminMktPlc'),
+            (0, authz_handler_1.authorize)('admin'),
             this.findByEmail,
             this.findAll
         ]);

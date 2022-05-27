@@ -10,7 +10,6 @@ import {Endereco, EnderecosSchema} from '../models/enderecos.model '
 export interface Pedido extends mongoose.Document{
     loja: mongoose.Types.ObjectId | Loja,
     user: mongoose.Types.ObjectId | User,
-    userName: string,
     tipoPagamento: mongoose.Types.ObjectId | TipoPagamento,
     valor: string,
     status: string,
@@ -41,11 +40,6 @@ const pedidoSchema = new mongoose.Schema({
         type: String,
         required: true,
         maxlength: 20
-    },
-    userName: {
-        type: String,
-        required: true,
-        maxlength: 30
     },
     status: {
         type: String,
