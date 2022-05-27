@@ -10,6 +10,7 @@ const authenticate = (req, resp, next) => {
     user_model_1.User.findByEmail(email, '+password')
         .then(user => {
         if (user && user.matches(password)) {
+            let profiles = user.profiles;
             //gerar token
             const token = jwt.sign({ sub: user.email, iss: 'MarketPlace-API-Manager' }, environment_1.environment.security.apiSecret);
             resp.json({ id: user._id, name: user.name, profile: profiles[0], accessToken: token });

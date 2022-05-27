@@ -12,6 +12,8 @@ export const authenticate: restify.RequestHandler = (req, resp, next) =>{
     User.findByEmail(email, '+password')
     .then(user=>{
         if(user && user.matches(password)){
+
+            let profiles = user.profiles
             //gerar token
             const token = jwt.sign({sub: user.email, iss: 'MarketPlace-API-Manager'},
              environment.security.apiSecret)
