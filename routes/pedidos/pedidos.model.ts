@@ -56,7 +56,8 @@ const pedidoSchema = new mongoose.Schema({
     },
     endereco: {
         type: EnderecosSchema,
-        required: true
+        required: true,
+        default: {}
     },
     produtos: {
         type: [ProdutoPedidoSchema],
