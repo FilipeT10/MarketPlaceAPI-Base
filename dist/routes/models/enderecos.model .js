@@ -7,6 +7,10 @@ const enderecosSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    logradouro: {
+        type: String,
+        required: true
+    },
     complemento: {
         type: String,
         required: true
