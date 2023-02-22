@@ -25,6 +25,11 @@ const pedidoSchema = new mongoose.Schema({
         required: true,
         maxlength: 20
     },
+    observacao: {
+        type: String,
+        required: false,
+        maxlength: 300
+    },
     status: {
         type: String,
         required: true,

@@ -9,7 +9,7 @@ const imagensSchema = new mongoose.Schema({
     base: {
         type: String,
         required: true
-    },
+    }
 }, { _id : false });
 
 

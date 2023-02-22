@@ -1,7 +1,8 @@
 import { Imagem, ImagensSchema } from './../models/imagens.model';
 import * as mongoose from 'mongoose'
 import {Aplication, AplicationsSchema} from '../aplications/aplications.model'
-
+import { Cores, CoresSchema } from '../models/cores.model';
+import { Endereco, EnderecosSchema } from '../models/enderecos.model ';
 
 export interface Loja extends mongoose.Document {
     name: string,
@@ -9,6 +10,8 @@ export interface Loja extends mongoose.Document {
     aplications: Aplication[],
     tipoLoja: string
     ativo: boolean
+    endereco: Endereco,
+    cores: Cores
     logo: Imagem,
 }
 
@@ -32,6 +35,16 @@ const lojaSchema = new mongoose.Schema({
         type: Boolean,
         required: false,
         default: true
+    },
+    endereco: {
+        type: EnderecosSchema,
+        required: true,
+        default: {}
+    },
+    cores: {
+        type: CoresSchema,
+        required: true,
+        default: []
     },
     logo: {
         type: ImagensSchema,

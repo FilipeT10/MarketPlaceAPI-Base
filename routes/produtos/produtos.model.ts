@@ -7,6 +7,7 @@ import {User} from '../users/user.model'
 import {Imagem, ImagensSchema} from '../models/imagens.model'
 export interface Produto extends mongoose.Document{
     name: string,
+    descricao: string,
     loja: mongoose.Types.ObjectId | Loja,
     categoria: mongoose.Types.ObjectId | Categoria,
     preco: string,
@@ -26,6 +27,11 @@ const produtoSchema = new mongoose.Schema({
         type: String,
         required: true,
         maxlength: 40
+    },
+    descricao: {
+        type: String,
+        required: true,
+        maxlength: 600
     },
     loja: {
         type: mongoose.Schema.Types.ObjectId,

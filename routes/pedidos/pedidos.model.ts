@@ -16,7 +16,8 @@ export interface Pedido extends mongoose.Document{
     pontos: number,
     data: Date,
     endereco: Endereco,
-    produtos: ProdutoPedido[]
+    produtos: ProdutoPedido[],
+    observacao: string
 }
 
 
@@ -40,6 +41,11 @@ const pedidoSchema = new mongoose.Schema({
         type: String,
         required: true,
         maxlength: 20
+    },
+    observacao: {
+        type: String,
+        required: false,
+        maxlength: 300
     },
     status: {
         type: String,

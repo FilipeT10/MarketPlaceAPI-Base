@@ -9,6 +9,11 @@ const produtoSchema = new mongoose.Schema({
         required: true,
         maxlength: 40
     },
+    descricao: {
+        type: String,
+        required: true,
+        maxlength: 600
+    },
     loja: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Loja',

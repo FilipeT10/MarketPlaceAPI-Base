@@ -1,12 +1,12 @@
-import { ProdutoPedido, ProdutoPedidoSchema } from './../models/produtopedido.model';
-import { Pedido, PedidoSchema } from './../pedidos/pedidos.model';
+import { ProdutoPedido, ProdutoPedidoSchema } from './../models/produtopedido.model'
+import { Pedido, PedidoSchema } from './../pedidos/pedidos.model'
+import { Produto } from './../produtos/produtos.model'
 import * as mongoose from 'mongoose'
 import {validateCPF} from '../../common/validator'
 import * as bcrypt from 'bcrypt'
 import {environment} from '../../common/environment'
 import {Loja} from '../lojas/lojas.model'
-
-import { Endereco, EnderecosSchema } from './../models/enderecos.model ';
+import { Endereco, EnderecosSchema } from './../models/enderecos.model'
 
 
 export interface User extends mongoose.Document {
@@ -15,12 +15,14 @@ export interface User extends mongoose.Document {
     password: string,
     cpf: string,
     gender: string,
+    telefone: string,
     data: Date,
     pontos: number,
     loja: mongoose.Types.ObjectId | Loja,
     profiles: string[],
     enderecos: Endereco[],
     carrinho: ProdutoPedido[],
+    favoritos: mongoose.Types.ObjectId[] | Produto[],
     pedidos: mongoose.Types.ObjectId[] | Pedido[],
     matches(password: string): boolean,
     hasAny(...profiles: string[]): boolean
@@ -36,6 +38,11 @@ const userSchema = new mongoose.Schema({
         required: true,
         maxlength: 80,
         minlength: 3
+    },
+    telefone:{ 
+        type: String,
+        required: true,
+        maxlength: 12,
     },
     email:{
         type: String,
@@ -91,6 +98,12 @@ const userSchema = new mongoose.Schema({
     pedidos: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Pedido',
+        required: true,
+        default: []
+    },
+    favoritos: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Produto',
         required: true,
         default: []
     }
