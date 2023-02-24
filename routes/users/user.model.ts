@@ -6,8 +6,7 @@ import {validateCPF} from '../../common/validator'
 import * as bcrypt from 'bcrypt'
 import {environment} from '../../common/environment'
 import {Loja} from '../lojas/lojas.model'
-import { Endereco, EnderecosSchema } from './../models/enderecos.model'
-
+import { Endereco, EnderecosSchema } from '../models/enderecos.model '
 
 export interface User extends mongoose.Document {
     name: string,

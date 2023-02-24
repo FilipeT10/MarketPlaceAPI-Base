@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const validator_1 = require("../../common/validator");
 const bcrypt = require("bcrypt");
 const environment_1 = require("../../common/environment");
-const enderecos_model_1 = require("./../models/enderecos.model");
+const enderecos_model_1 = require("../models/enderecos.model ");
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
