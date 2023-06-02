@@ -3,7 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.usersRouter = void 0;
 const model_router_1 = require("../../common/model-router");
 const user_model_1 = require("./user.model");
+const restify_errors_1 = require("restify-errors");
 const auth_handler_1 = require("../../security/auth.handler");
+const mongoose = require("mongoose");
 const authz_handler_1 = require("../../security/authz.handler");
 class UsersRouter extends model_router_1.ModelRouter {
     constructor() {
@@ -26,6 +28,23 @@ class UsersRouter extends model_router_1.ModelRouter {
                 next();
             }
         };
+        this.addCarrinho = (req, resp, next) => {
+            const options = { runValidators: true, new: true };
+            user_model_1.User.findByIdAndUpdate(req.params.id, { $push: { carrinho: req.body } }, options)
+                .then(this.render(resp, next))
+                .catch(next);
+        };
+        this.removeItemCarrinho = (req, resp, next) => {
+            if (!mongoose.Types.ObjectId.isValid(req.params.idItem)) {
+                next(new restify_errors_1.NotFoundError('Document not found'));
+            }
+            else {
+                const options = { runValidators: true, new: true };
+                user_model_1.User.findByIdAndUpdate(req.params.id, { $pull: { carrinho: { "_id": req.params.idItem } } }, options)
+                    .then(this.render(resp, next))
+                    .catch(next);
+            }
+        };
         this.on('beforeRender', document => {
             document.password = undefined;
         });
@@ -43,6 +62,8 @@ class UsersRouter extends model_router_1.ModelRouter {
         application.del(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('sysAdminMktPlc'), this.delete]);
         application.post(`${this.basePath}/authenticate`, auth_handler_1.authenticate);
         application.post(`${this.basePath}/authenticateSgm`, auth_handler_1.authenticateSGM);
+        application.post(`${this.basePath}/:id/carrinho/add`, [this.validateId, this.addCarrinho]);
+        application.del(`${this.basePath}/:id/carrinho/:idItem`, [this.validateId, this.removeItemCarrinho]);
     }
 }
 exports.usersRouter = new UsersRouter();

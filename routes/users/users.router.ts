@@ -5,6 +5,7 @@ import {NotFoundError} from 'restify-errors'
 import { version } from 'mongoose'
 import {authenticate, authenticateSGM} from '../../security/auth.handler'
 
+import * as mongoose from 'mongoose'
 import {authorize} from '../../security/authz.handler'
 
 class UsersRouter extends ModelRouter<User> {
@@ -33,6 +34,23 @@ class UsersRouter extends ModelRouter<User> {
             next()
         }
     }
+    addCarrinho: restify.RequestHandler = (req, resp, next) => {
+        const options = { runValidators: true, new: true }
+        User.findByIdAndUpdate(req.params.id, { $push: { carrinho: req.body  } }, options)
+        .then(this.render(resp, next))
+        .catch(next)
+    }
+    removeItemCarrinho: restify.RequestHandler = (req, resp, next) => {
+        if(!mongoose.Types.ObjectId.isValid(req.params.idItem)){
+            next(new NotFoundError('Document not found'));
+        } else {
+            const options = { runValidators: true, new: true }
+            User.findByIdAndUpdate(req.params.id, { $pull: { carrinho: { "_id": req.params.idItem }  } }, options)
+            .then(this.render(resp, next))
+            .catch(next)
+        }
+    }
+    
 
     applyRoutes(application: restify.Server){
 
@@ -47,9 +65,12 @@ class UsersRouter extends ModelRouter<User> {
         application.del(`${this.basePath}/:id`, [this.validateId, authorize('sysAdminMktPlc'), this.delete ])
         
         application.post(`${this.basePath}/authenticate`, authenticate)
-
-
         application.post(`${this.basePath}/authenticateSgm`, authenticateSGM)
+
+
+        application.post(`${this.basePath}/:id/carrinho/add`, [this.validateId, this.addCarrinho])
+
+        application.del(`${this.basePath}/:id/carrinho/:idItem`, [this.validateId, this.removeItemCarrinho])
         
     }
 }
