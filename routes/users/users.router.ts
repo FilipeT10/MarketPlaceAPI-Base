@@ -37,7 +37,7 @@ class UsersRouter extends ModelRouter<User> {
     addCarrinho: restify.RequestHandler = (req, resp, next) => {
         const options = { runValidators: true, new: true }
         User.findByIdAndUpdate(req.params.id, { $push: { carrinho: req.body  } }, options)
-        .then(this.render(resp, next))
+        .then(this.renderCarrinho(resp, next))
         .catch(next)
     }
     renderCarrinho(response: restify.Response, next: restify.Next){
@@ -62,7 +62,7 @@ class UsersRouter extends ModelRouter<User> {
         } else {
             const options = { runValidators: true, new: true }
             User.findByIdAndUpdate(req.params.id, { $pull: { carrinho: { "_id": req.params.idItem }  } }, options)
-            .then(this.render(resp, next))
+            .then(this.renderCarrinho(resp, next))
             .catch(next)
         }
     }

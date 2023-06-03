@@ -31,7 +31,7 @@ class UsersRouter extends model_router_1.ModelRouter {
         this.addCarrinho = (req, resp, next) => {
             const options = { runValidators: true, new: true };
             user_model_1.User.findByIdAndUpdate(req.params.id, { $push: { carrinho: req.body } }, options)
-                .then(this.render(resp, next))
+                .then(this.renderCarrinho(resp, next))
                 .catch(next);
         };
         this.getCarrinho = (req, resp, next) => {
@@ -46,7 +46,7 @@ class UsersRouter extends model_router_1.ModelRouter {
             else {
                 const options = { runValidators: true, new: true };
                 user_model_1.User.findByIdAndUpdate(req.params.id, { $pull: { carrinho: { "_id": req.params.idItem } } }, options)
-                    .then(this.render(resp, next))
+                    .then(this.renderCarrinho(resp, next))
                     .catch(next);
             }
         };
