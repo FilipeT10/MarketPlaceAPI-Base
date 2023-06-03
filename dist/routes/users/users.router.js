@@ -34,6 +34,11 @@ class UsersRouter extends model_router_1.ModelRouter {
                 .then(this.render(resp, next))
                 .catch(next);
         };
+        this.getCarrinho = (req, resp, next) => {
+            user_model_1.User.findById(req.params.id)
+                .then(this.renderCarrinho(resp, next))
+                .catch(next);
+        };
         this.removeItemCarrinho = (req, resp, next) => {
             if (!mongoose.Types.ObjectId.isValid(req.params.idItem)) {
                 next(new restify_errors_1.NotFoundError('Document not found'));
@@ -49,6 +54,18 @@ class UsersRouter extends model_router_1.ModelRouter {
             document.password = undefined;
         });
     }
+    renderCarrinho(response, next) {
+        return (document) => {
+            if (document) {
+                this.emit('beforeRender', document);
+                response.json(document.carrinho);
+            }
+            else {
+                throw new restify_errors_1.NotFoundError('Documento não encontrado');
+            }
+            return next(false);
+        };
+    }
     applyRoutes(application) {
         application.get(`${this.basePath}`, [
             (0, authz_handler_1.authorize)('sysAdminMktPlc', 'admin'),
@@ -63,6 +80,7 @@ class UsersRouter extends model_router_1.ModelRouter {
         application.post(`${this.basePath}/authenticate`, auth_handler_1.authenticate);
         application.post(`${this.basePath}/authenticateSgm`, auth_handler_1.authenticateSGM);
         application.post(`${this.basePath}/:id/carrinho/add`, [this.validateId, this.addCarrinho]);
+        application.get(`${this.basePath}/:id/carrinho`, [this.validateId, this.getCarrinho]);
         application.del(`${this.basePath}/:id/carrinho/:idItem`, [this.validateId, this.removeItemCarrinho]);
     }
 }

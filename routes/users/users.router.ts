@@ -40,6 +40,22 @@ class UsersRouter extends ModelRouter<User> {
         .then(this.render(resp, next))
         .catch(next)
     }
+    renderCarrinho(response: restify.Response, next: restify.Next){
+        return (document)=>{
+            if(document){
+                this.emit('beforeRender', document)
+                response.json(document.carrinho)
+            }else{
+                throw new NotFoundError('Documento não encontrado')
+            }
+            return next(false)
+        }
+    }
+    getCarrinho: restify.RequestHandler = (req, resp, next) => {
+        User.findById(req.params.id)
+        .then(this.renderCarrinho(resp, next))
+        .catch(next)
+    }
     removeItemCarrinho: restify.RequestHandler = (req, resp, next) => {
         if(!mongoose.Types.ObjectId.isValid(req.params.idItem)){
             next(new NotFoundError('Document not found'));
@@ -69,7 +85,7 @@ class UsersRouter extends ModelRouter<User> {
 
 
         application.post(`${this.basePath}/:id/carrinho/add`, [this.validateId, this.addCarrinho])
-
+        application.get(`${this.basePath}/:id/carrinho`, [this.validateId, this.getCarrinho])
         application.del(`${this.basePath}/:id/carrinho/:idItem`, [this.validateId, this.removeItemCarrinho])
         
     }
