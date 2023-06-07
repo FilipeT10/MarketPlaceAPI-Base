@@ -44,7 +44,7 @@ const enderecosSchema = new mongoose.Schema({
         type: Number,
         required: true
     }
-}, { _id : false });
+});
 
 export const Endereco = mongoose.model<Endereco>('Endereco', enderecosSchema)
 

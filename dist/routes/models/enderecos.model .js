@@ -35,6 +35,6 @@ const enderecosSchema = new mongoose.Schema({
         type: Number,
         required: true
     }
-}, { _id: false });
+});
 exports.Endereco = mongoose.model('Endereco', enderecosSchema);
 exports.EnderecosSchema = enderecosSchema;

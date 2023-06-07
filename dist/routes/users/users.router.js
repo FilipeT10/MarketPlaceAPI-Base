@@ -50,6 +50,29 @@ class UsersRouter extends model_router_1.ModelRouter {
                     .catch(next);
             }
         };
+        // Endereço
+        this.addEndereco = (req, resp, next) => {
+            const options = { runValidators: true, new: true };
+            user_model_1.User.findByIdAndUpdate(req.params.id, { $push: { enderecos: req.body } }, options)
+                .then(this.renderEnderecos(resp, next))
+                .catch(next);
+        };
+        this.getEnderecos = (req, resp, next) => {
+            user_model_1.User.findById(req.params.id)
+                .then(this.renderEnderecos(resp, next))
+                .catch(next);
+        };
+        this.removeItemEndereco = (req, resp, next) => {
+            if (!mongoose.Types.ObjectId.isValid(req.params.idItem)) {
+                next(new restify_errors_1.NotFoundError('Document not found'));
+            }
+            else {
+                const options = { runValidators: true, new: true };
+                user_model_1.User.findByIdAndUpdate(req.params.id, { $pull: { enderecos: { "_id": req.params.idItem } } }, options)
+                    .then(this.renderEnderecos(resp, next))
+                    .catch(next);
+            }
+        };
         this.on('beforeRender', document => {
             document.password = undefined;
         });
@@ -59,6 +82,18 @@ class UsersRouter extends model_router_1.ModelRouter {
             if (document) {
                 this.emit('beforeRender', document);
                 response.json(document.carrinho);
+            }
+            else {
+                throw new restify_errors_1.NotFoundError('Documento não encontrado');
+            }
+            return next(false);
+        };
+    }
+    renderEnderecos(response, next) {
+        return (document) => {
+            if (document) {
+                this.emit('beforeRender', document);
+                response.json(document.enderecos);
             }
             else {
                 throw new restify_errors_1.NotFoundError('Documento não encontrado');
@@ -82,6 +117,9 @@ class UsersRouter extends model_router_1.ModelRouter {
         application.post(`${this.basePath}/:id/carrinho/add`, [this.validateId, this.addCarrinho]);
         application.get(`${this.basePath}/:id/carrinho`, [this.validateId, this.getCarrinho]);
         application.del(`${this.basePath}/:id/carrinho/:idItem`, [this.validateId, this.removeItemCarrinho]);
+        application.post(`${this.basePath}/:id/enderecos/add`, [this.validateId, this.addEndereco]);
+        application.get(`${this.basePath}/:id/enderecos`, [this.validateId, this.getEnderecos]);
+        application.del(`${this.basePath}/:id/enderecos/:idItem`, [this.validateId, this.removeItemEndereco]);
     }
 }
 exports.usersRouter = new UsersRouter();

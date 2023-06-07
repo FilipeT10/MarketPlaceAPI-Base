@@ -66,6 +66,43 @@ class UsersRouter extends ModelRouter<User> {
             .catch(next)
         }
     }
+
+
+    // Endereço
+
+    addEndereco: restify.RequestHandler = (req, resp, next) => {
+        const options = { runValidators: true, new: true }
+        User.findByIdAndUpdate(req.params.id, { $push: { enderecos: req.body  } }, options)
+        .then(this.renderEnderecos(resp, next))
+        .catch(next)
+    }
+    renderEnderecos(response: restify.Response, next: restify.Next){
+        return (document)=>{
+            if(document){
+                this.emit('beforeRender', document)
+                response.json(document.enderecos)
+            }else{
+                throw new NotFoundError('Documento não encontrado')
+            }
+            return next(false)
+        }
+    }
+    getEnderecos: restify.RequestHandler = (req, resp, next) => {
+        User.findById(req.params.id)
+        .then(this.renderEnderecos(resp, next))
+        .catch(next)
+    }
+    removeItemEndereco: restify.RequestHandler = (req, resp, next) => {
+        if(!mongoose.Types.ObjectId.isValid(req.params.idItem)){
+            next(new NotFoundError('Document not found'));
+        } else {
+            const options = { runValidators: true, new: true }
+            User.findByIdAndUpdate(req.params.id, { $pull: { enderecos: { "_id": req.params.idItem }  } }, options)
+            .then(this.renderEnderecos(resp, next))
+            .catch(next)
+        }
+    }
+
     
 
     applyRoutes(application: restify.Server){
@@ -87,6 +124,10 @@ class UsersRouter extends ModelRouter<User> {
         application.post(`${this.basePath}/:id/carrinho/add`, [this.validateId, this.addCarrinho])
         application.get(`${this.basePath}/:id/carrinho`, [this.validateId, this.getCarrinho])
         application.del(`${this.basePath}/:id/carrinho/:idItem`, [this.validateId, this.removeItemCarrinho])
+
+        application.post(`${this.basePath}/:id/enderecos/add`, [this.validateId, this.addEndereco])
+        application.get(`${this.basePath}/:id/enderecos`, [this.validateId, this.getEnderecos])
+        application.del(`${this.basePath}/:id/enderecos/:idItem`, [this.validateId, this.removeItemEndereco])
         
     }
 }
