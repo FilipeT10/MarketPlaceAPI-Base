@@ -12,7 +12,8 @@ export interface Pedido extends mongoose.Document{
     user: mongoose.Types.ObjectId | User,
     tipoPagamento: mongoose.Types.ObjectId | TipoPagamento,
     valor: string,
-    status: string,
+    troco: string,
+    status: number,
     pontos: number,
     data: Date,
     endereco: Endereco,
@@ -42,15 +43,19 @@ const pedidoSchema = new mongoose.Schema({
         required: true,
         maxlength: 20
     },
+    troco: {
+        type: String,
+        required: false,
+        maxlength: 20
+    },
     observacao: {
         type: String,
         required: false,
         maxlength: 300
     },
     status: {
-        type: String,
-        required: true,
-        maxlength: 25
+        type: Number,
+        required: false
     },
     pontos:{
         type: Number,
