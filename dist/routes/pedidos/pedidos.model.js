@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Pedido = exports.PedidoSchema = void 0;
 const produtopedido_model_1 = require("./../models/produtopedido.model");
 const mongoose = require("mongoose");
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const enderecos_model_1 = require("../models/enderecos.model ");
 const pedidoSchema = new mongoose.Schema({
     loja: {
@@ -43,6 +44,10 @@ const pedidoSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    numeroPedido: {
+        type: Number,
+        required: false
+    },
     data: {
         type: Date,
         default: Date.now
@@ -82,4 +87,5 @@ pedidoSchema.statics.findByLoja = function (loja, user, ativo, projection) {
     }
 };
 exports.PedidoSchema = pedidoSchema;
+pedidoSchema.plugin(AutoIncrement, { inc_field: 'numeroPedido' });
 exports.Pedido = mongoose.model('Pedido', pedidoSchema);

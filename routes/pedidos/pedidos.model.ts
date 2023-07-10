@@ -5,7 +5,7 @@ import * as mongoose from 'mongoose'
 import {Loja} from '../lojas/lojas.model'
 import {User} from '../users/user.model'
 import {Imagem, ImagensSchema} from '../models/imagens.model'
-
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 import {Endereco, EnderecosSchema} from '../models/enderecos.model '
 export interface Pedido extends mongoose.Document{
     loja: mongoose.Types.ObjectId | Loja,
@@ -18,7 +18,8 @@ export interface Pedido extends mongoose.Document{
     data: Date,
     endereco: Endereco,
     produtos: ProdutoPedido[],
-    observacao: string
+    observacao: string,
+    numeroPedido: number,
 }
 
 
@@ -60,6 +61,10 @@ const pedidoSchema = new mongoose.Schema({
     pontos:{
         type: Number,
         required: true
+    },
+    numeroPedido:{
+        type: Number,
+        required: false
     },
     data: { 
         type: Date, 
@@ -105,6 +110,8 @@ pedidoSchema.statics.findByLoja = function(loja: string, user: string,  ativo: b
 
 
 export const PedidoSchema = pedidoSchema
+
+pedidoSchema.plugin(AutoIncrement, {inc_field: 'numeroPedido'});
 
 export const Pedido = mongoose.model<Pedido, PedidoModel>('Pedido', pedidoSchema)
 
