@@ -25,6 +25,10 @@ const lojaSchema = new mongoose.Schema({
         required: false,
         default: true
     },
+    valorFrete: {
+        type: String,
+        required: true,
+    },
     endereco: {
         type: enderecos_model_1.EnderecosSchema,
         required: true,

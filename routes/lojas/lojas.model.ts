@@ -10,6 +10,7 @@ export interface Loja extends mongoose.Document {
     aplications: Aplication[],
     tipoLoja: string
     ativo: boolean
+    valorFrete: string,
     endereco: Endereco,
     cores: Cores
     logo: Imagem,
@@ -35,6 +36,10 @@ const lojaSchema = new mongoose.Schema({
         type: Boolean,
         required: false,
         default: true
+    },
+    valorFrete: {
+        type: String,
+        required: true,
     },
     endereco: {
         type: EnderecosSchema,
