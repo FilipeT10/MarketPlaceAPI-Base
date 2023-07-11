@@ -12,6 +12,7 @@ export interface Pedido extends mongoose.Document{
     user: mongoose.Types.ObjectId | User,
     tipoPagamento: mongoose.Types.ObjectId | TipoPagamento,
     valor: string,
+    valorFrete: string,
     troco: string,
     status: number,
     pontos: number,
@@ -49,6 +50,10 @@ const pedidoSchema = new mongoose.Schema({
         type: String,
         required: false,
         maxlength: 20
+    },
+    valorFrete: {
+        type: String,
+        required: true,
     },
     observacao: {
         type: String,

@@ -31,6 +31,10 @@ const pedidoSchema = new mongoose.Schema({
         required: false,
         maxlength: 20
     },
+    valorFrete: {
+        type: String,
+        required: true,
+    },
     observacao: {
         type: String,
         required: false,
