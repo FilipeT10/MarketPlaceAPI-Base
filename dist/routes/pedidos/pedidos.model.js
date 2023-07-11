@@ -36,6 +36,11 @@ const pedidoSchema = new mongoose.Schema({
         required: false,
         maxlength: 300
     },
+    tipoEntrega: {
+        type: String,
+        required: true,
+        enum: ["entrega", "retirada"]
+    },
     status: {
         type: Number,
         required: false
