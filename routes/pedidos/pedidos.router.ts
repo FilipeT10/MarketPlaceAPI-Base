@@ -29,7 +29,7 @@ class PedidosRouter extends ModelRouter<Pedido> {
     clearCarrinho: restify.RequestHandler = (req, resp, next) => {
         const options = { runValidators: true, new: true }
         User.findByIdAndUpdate(req.body.user,  { carrinho: []  }, options)
-        .then(next)
+        .then(this.save(req, resp, next))
         .catch(next)
     }
     
@@ -56,7 +56,7 @@ class PedidosRouter extends ModelRouter<Pedido> {
 
         application.get(`${this.basePath}`, [this.findByLoja, this.findAll])
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById])
-        application.post(`${this.basePath}`, [this.clearCarrinho, this.save])
+        application.post(`${this.basePath}`, [this.clearCarrinho])
         application.patch(`${this.basePath}/:id`, [this.validateId, authorize('admin'), this.update])
       }
 }
