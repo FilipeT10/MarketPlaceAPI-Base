@@ -40,6 +40,12 @@ class UsersRouter extends ModelRouter<User> {
         .then(this.renderCarrinho(resp, next))
         .catch(next)
     }
+    clearCarrinho: restify.RequestHandler = (req, resp, next) => {
+        const options = { runValidators: true, new: true }
+        User.findByIdAndUpdate(req.params.id,  { carrinho: []  }, options)
+        .then(next)
+        .catch(next)
+    }
     renderCarrinho(response: restify.Response, next: restify.Next){
         return (document)=>{
             if(document){

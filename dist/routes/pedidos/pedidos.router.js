@@ -4,6 +4,7 @@ exports.pedidosRouter = void 0;
 const model_router_1 = require("../../common/model-router");
 const pedidos_model_1 = require("./pedidos.model");
 const authz_handler_1 = require("../../security/authz.handler");
+const users_router_1 = require("../users/users.router");
 class PedidosRouter extends model_router_1.ModelRouter {
     constructor() {
         super(pedidos_model_1.Pedido);
@@ -42,7 +43,7 @@ class PedidosRouter extends model_router_1.ModelRouter {
     applyRoutes(application) {
         application.get(`${this.basePath}`, [this.findByLoja, this.findAll]);
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById]);
-        application.post(`${this.basePath}`, [this.save]);
+        application.post(`${this.basePath}/:id`, [users_router_1.usersRouter.clearCarrinho, this.save]);
         application.patch(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.update]);
     }
 }

@@ -34,6 +34,12 @@ class UsersRouter extends model_router_1.ModelRouter {
                 .then(this.renderCarrinho(resp, next))
                 .catch(next);
         };
+        this.clearCarrinho = (req, resp, next) => {
+            const options = { runValidators: true, new: true };
+            user_model_1.User.findByIdAndUpdate(req.params.id, { carrinho: [] }, options)
+                .then(next)
+                .catch(next);
+        };
         this.getCarrinho = (req, resp, next) => {
             user_model_1.User.findById(req.params.id)
                 .then(this.renderCarrinho(resp, next))
