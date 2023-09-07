@@ -4,13 +4,19 @@ exports.pedidosRouter = void 0;
 const model_router_1 = require("../../common/model-router");
 const pedidos_model_1 = require("./pedidos.model");
 const authz_handler_1 = require("../../security/authz.handler");
-const users_router_1 = require("../users/users.router");
+const user_model_1 = require("../users/user.model");
 class PedidosRouter extends model_router_1.ModelRouter {
     constructor() {
         super(pedidos_model_1.Pedido);
         this.findById = (req, resp, next) => {
             this.model.findById(req.params.id)
                 .then(this.render(resp, next))
+                .catch(next);
+        };
+        this.clearCarrinho = (req, resp, next) => {
+            const options = { runValidators: true, new: true };
+            user_model_1.User.findByIdAndUpdate(req.body.user, { carrinho: [] }, options)
+                .then(next)
                 .catch(next);
         };
         this.findByLoja = (req, resp, next) => {
@@ -43,7 +49,7 @@ class PedidosRouter extends model_router_1.ModelRouter {
     applyRoutes(application) {
         application.get(`${this.basePath}`, [this.findByLoja, this.findAll]);
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById]);
-        application.post(`${this.basePath}/:id`, [users_router_1.usersRouter.clearCarrinho, this.save]);
+        application.post(`${this.basePath}`, [this.clearCarrinho, this.save]);
         application.patch(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.update]);
     }
 }

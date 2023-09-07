@@ -5,7 +5,7 @@ import {NotFoundError} from 'restify-errors'
 import {Loja} from "../lojas/lojas.model"
 
 import {authorize} from '../../security/authz.handler'
-import { usersRouter } from '../users/users.router'
+import { User } from '../users/user.model'
 
 class PedidosRouter extends ModelRouter<Pedido> {
 
@@ -24,6 +24,12 @@ class PedidosRouter extends ModelRouter<Pedido> {
     findById = (req, resp, next) => {
         this.model.findById(req.params.id)
         .then(this.render(resp, next))
+        .catch(next)
+    }
+    clearCarrinho: restify.RequestHandler = (req, resp, next) => {
+        const options = { runValidators: true, new: true }
+        User.findByIdAndUpdate(req.body.user,  { carrinho: []  }, options)
+        .then(next)
         .catch(next)
     }
     
@@ -50,7 +56,7 @@ class PedidosRouter extends ModelRouter<Pedido> {
 
         application.get(`${this.basePath}`, [this.findByLoja, this.findAll])
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById])
-        application.post(`${this.basePath}/:id`, [usersRouter.clearCarrinho, this.save])
+        application.post(`${this.basePath}`, [this.clearCarrinho, this.save])
         application.patch(`${this.basePath}/:id`, [this.validateId, authorize('admin'), this.update])
       }
 }
