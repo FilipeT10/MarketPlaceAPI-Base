@@ -47,7 +47,8 @@ const pedidoSchema = new mongoose.Schema({
     },
     status: {
         type: Number,
-        required: false
+        required: false,
+        enum: [1, 2, 3, 4, 5, 6]
     },
     pontos: {
         type: Number,
