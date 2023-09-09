@@ -45,7 +45,7 @@ class PedidosRouter extends model_router_1.ModelRouter {
         this.aprovarPedido = (req, resp, next) => __awaiter(this, void 0, void 0, function* () {
             const options = { runValidators: true, new: true };
             var status = 2;
-            var pagamentoPresencial = false;
+            var pagamentoPresencial = true;
             if (pagamentoPresencial) {
                 status = 3;
             }

@@ -47,7 +47,7 @@ class PedidosRouter extends ModelRouter<Pedido> {
     aprovarPedido: restify.RequestHandler = async (req, resp, next) => {
         const options = { runValidators: true, new: true }
         var status = 2
-        var pagamentoPresencial = false
+        var pagamentoPresencial = true
         if (pagamentoPresencial) {
             status = 3
         }
