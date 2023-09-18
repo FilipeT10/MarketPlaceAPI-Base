@@ -137,10 +137,10 @@ class PedidosRouter extends model_router_1.ModelRouter {
         application.get(`${this.basePath}`, [this.findByLoja, this.findAll]);
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById]);
         application.post(`${this.basePath}`, [this.validateId, this.clearCart]);
-        application.post(`${this.basePath}/:id/aprovar`, [this.validateId, this.aprovarPedido, this.findById]);
-        application.post(`${this.basePath}/:id/pago`, [this.validateId, this.setarPagoPedido, this.findById]);
-        application.post(`${this.basePath}/:id/entrega`, [this.validateId, this.setarEntregaPedido, this.findById]);
-        application.post(`${this.basePath}/:id/finalizar`, [this.validateId, this.setarFinalizarPedido, this.findById]);
+        application.post(`${this.basePath}/:id/aprovar`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.aprovarPedido, this.findById]);
+        application.post(`${this.basePath}/:id/pago`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.setarPagoPedido, this.findById]);
+        application.post(`${this.basePath}/:id/entrega`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.setarEntregaPedido, this.findById]);
+        application.post(`${this.basePath}/:id/finalizar`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.setarFinalizarPedido, this.findById]);
         application.post(`${this.basePath}/:id/cancelar`, [this.validateId, this.cancelarPedido, this.findById]);
         application.patch(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.update]);
     }

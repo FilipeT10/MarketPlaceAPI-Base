@@ -58,7 +58,6 @@ class PedidosRouter extends ModelRouter<Pedido> {
         } else {
             next(new NotFoundError('Invalid status'))
         }
-
     }
     setarPagoPedido: restify.RequestHandler = async (req, resp, next) => {
         const options = { runValidators: true, new: true }
@@ -130,10 +129,10 @@ class PedidosRouter extends ModelRouter<Pedido> {
         application.get(`${this.basePath}`, [this.findByLoja, this.findAll])
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById])
         application.post(`${this.basePath}`, [this.validateId, this.clearCart])
-        application.post(`${this.basePath}/:id/aprovar`, [this.validateId, this.aprovarPedido, this.findById])
-        application.post(`${this.basePath}/:id/pago`, [this.validateId, this.setarPagoPedido, this.findById])
-        application.post(`${this.basePath}/:id/entrega`, [this.validateId, this.setarEntregaPedido, this.findById])
-        application.post(`${this.basePath}/:id/finalizar`, [this.validateId, this.setarFinalizarPedido, this.findById])
+        application.post(`${this.basePath}/:id/aprovar`, [this.validateId, authorize('admin'), this.aprovarPedido, this.findById])
+        application.post(`${this.basePath}/:id/pago`, [this.validateId, authorize('admin'), this.setarPagoPedido, this.findById])
+        application.post(`${this.basePath}/:id/entrega`, [this.validateId, authorize('admin'), this.setarEntregaPedido, this.findById])
+        application.post(`${this.basePath}/:id/finalizar`, [this.validateId, authorize('admin'), this.setarFinalizarPedido, this.findById])
         application.post(`${this.basePath}/:id/cancelar`, [this.validateId, this.cancelarPedido, this.findById])
         application.patch(`${this.basePath}/:id`, [this.validateId, authorize('admin'), this.update])
       }

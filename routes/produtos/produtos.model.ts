@@ -5,6 +5,7 @@ import {Loja} from '../lojas/lojas.model'
 import {User} from '../users/user.model'
 
 import {Imagem, ImagensSchema} from '../models/imagens.model'
+import { Promocao, PromocaosSchema } from '../models/promocao.model';
 export interface Produto extends mongoose.Document{
     name: string,
     descricao: string,
@@ -13,6 +14,7 @@ export interface Produto extends mongoose.Document{
     preco: string,
     tamanhos: [string],
     cores: [string],
+    promocao: Promocao, 
     ingredientes: [string],
     quantidade: number
     ativo: boolean,
@@ -80,6 +82,11 @@ const produtoSchema = new mongoose.Schema({
         type: [ImagensSchema],
         required: true,
         default: []
+    },
+    promocao: {
+        type: PromocaosSchema,
+        required: false,
+        default: null
     },
     subcategorias: {
         type: [mongoose.Schema.Types.ObjectId],
