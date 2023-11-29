@@ -10,6 +10,7 @@ const lojas_router_1 = require("./routes/lojas/lojas.router");
 const aplications_router_1 = require("./routes/aplications/aplications.router");
 const categorias_router_1 = require("./routes/categorias/categorias.router");
 const produtos_router_1 = require("./routes/produtos/produtos.router");
+const cupons_router_1 = require("./routes/cupons/cupons.router");
 const server = new server_1.Server();
 server.bootstrap([
     main_router_1.mainRouter,
@@ -20,7 +21,8 @@ server.bootstrap([
     categorias_router_1.categoriasRouter,
     subcategorias_router_1.subcategoriasRouter,
     tipopagamento_router_1.tipoPagamentoRouter,
-    pedidos_router_1.pedidosRouter
+    pedidos_router_1.pedidosRouter,
+    cupons_router_1.cuponsRouter
 ]).then(server => {
     console.log('Server is listening on:', server.application.address());
 }).catch(error => {

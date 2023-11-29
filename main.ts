@@ -8,6 +8,7 @@ import { lojasRouter } from './routes/lojas/lojas.router'
 import { aplicationsRouter } from './routes/aplications/aplications.router'
 import { categoriasRouter} from './routes/categorias/categorias.router'
 import { produtosRouter} from './routes/produtos/produtos.router'
+import { cuponsRouter } from './routes/cupons/cupons.router';
 const server = new Server()
 
 server.bootstrap([
@@ -19,7 +20,8 @@ server.bootstrap([
     categoriasRouter,
     subcategoriasRouter,
     tipoPagamentoRouter,
-    pedidosRouter
+    pedidosRouter,
+    cuponsRouter
 ]).then(server =>{
     console.log('Server is listening on:', server.application.address());
 }).catch(error =>{

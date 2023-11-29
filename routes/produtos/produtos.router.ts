@@ -2,8 +2,6 @@ import {ModelRouter} from '../../common/model-router'
 import * as restify from 'restify'
 import {Produto} from './produtos.model'
 import {NotFoundError} from 'restify-errors'
-import {Loja} from "../lojas/lojas.model"
-
 import {authorize} from '../../security/authz.handler'
 
 class ProdutosRouter extends ModelRouter<Produto> {
@@ -60,7 +58,7 @@ class ProdutosRouter extends ModelRouter<Produto> {
     }
 
     
-    removerPromocaoProduto: restify.RequestHandler = async (id, periodoFinal) => {
+    removerPromocaoProduto = async (id, periodoFinal) => {
         const options = { runValidators: true, new: true }
         var valid = await this.validaPromo(id)
         if (!valid) {

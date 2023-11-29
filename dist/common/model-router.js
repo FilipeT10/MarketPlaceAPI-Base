@@ -37,7 +37,6 @@ class ModelRouter extends router_1.Router {
                 .catch(next);
         };
         this.save = (req, resp, next) => {
-            console.log('Entrou Save');
             let document = new this.model(req.body);
             document.save()
                 .then(this.render(resp, next))
