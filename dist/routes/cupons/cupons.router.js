@@ -49,14 +49,51 @@ class CuponsRouter extends model_router_1.ModelRouter {
                 console.log("Cupom desativado", periodoFinal, new Date());
             }).catch(() => console.log("Não foi possível desativar o cupom", periodoFinal, new Date()));
         });
+        this.validaCupom = (name) => __awaiter(this, void 0, void 0, function* () {
+            var cupom = yield this.model.findOne({ name });
+            if (!cupom) {
+                return true;
+            }
+            return false;
+        });
+        this.aplicaCupom = (req, resp, next) => __awaiter(this, void 0, void 0, function* () {
+            if (!req.params.name) {
+                next(new restify_errors_1.BadRequestError('Informe o cupom!'));
+            }
+            if (!req.params.valor) {
+                next(new restify_errors_1.BadRequestError('Informe o valor total!'));
+            }
+            if (!req.params.loja) {
+                next(new restify_errors_1.BadRequestError('Informe a loja!'));
+            }
+            var cupom = yield this.model.findOne({ name: req.params.name, loja: req.params.loja });
+            if (!cupom) {
+                next(new restify_errors_1.ConflictError('Cupom inválido!'));
+            }
+            else if (new Date() > cupom.periodoFinal) {
+                next(new restify_errors_1.ConflictError('Cupom expirado!'));
+            }
+            else if (new Date() < cupom.periodoInicial) {
+                next(new restify_errors_1.ConflictError('Cupom inválido!'));
+            }
+            return false;
+        });
         this.cadastrarCupom = (req, resp, next) => __awaiter(this, void 0, void 0, function* () {
             if (new Date(req.body.periodoFinal) <= new Date()) {
-                next(new restify_errors_1.NotFoundError('Período final inválido!'));
+                next(new restify_errors_1.BadRequestError('Período final inválido!'));
+            }
+            const tempoRestante = new Date(req.body.periodoFinal) - new Date();
+            //20 dias
+            if (tempoRestante > 1728000000) {
+                next(new restify_errors_1.BadRequestError('O intervalo máximo permitido é de 20 dias.'));
+            }
+            var valid = yield this.validaCupom(req.body.name);
+            if (!valid) {
+                next(new restify_errors_1.ConflictError('Já possui um cupom cadastrado com esse nome.'));
             }
             let document = new this.model(req.body);
             this.model.create(document)
                 .then((doc) => {
-                const tempoRestante = new Date(req.body.periodoFinal) - new Date();
                 setTimeout(() => this.desativarCupom(req.params.id, req.body.periodoFinal), tempoRestante);
                 resp.json(doc);
                 resp.end();
@@ -66,10 +103,6 @@ class CuponsRouter extends model_router_1.ModelRouter {
     }
     envelope(document) {
         let resource = super.envelope(document);
-        const restId = document.loja._id ? document.loja._id : document.loja;
-        resource._links.loja = `/lojas/${restId}`;
-        const restCatId = document.categoria._id ? document.categoria._id : document.categoria;
-        resource._links.categoria = `/categorias/${restCatId}`;
         return resource;
     }
     applyRoutes(application) {

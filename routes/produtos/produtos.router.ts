@@ -1,7 +1,7 @@
 import {ModelRouter} from '../../common/model-router'
 import * as restify from 'restify'
 import {Produto} from './produtos.model'
-import {NotFoundError} from 'restify-errors'
+import {BadRequestError} from 'restify-errors'
 import {authorize} from '../../security/authz.handler'
 
 class ProdutosRouter extends ModelRouter<Produto> {
@@ -71,20 +71,23 @@ class ProdutosRouter extends ModelRouter<Produto> {
 
     cadastrarPromocaoProduto: restify.RequestHandler = async (req, resp, next) => {
         if (new Date(req.body.periodoFinal) <= new Date()) {
-            next(new NotFoundError('Período final inválido!'))
+            next(new BadRequestError('Período final inválido!'))
+        }
+        const tempoRestante = new Date(req.body.periodoFinal) - new Date();
+        if (tempoRestante > 1728000000) {
+            next(new BadRequestError('O intervalo máximo permitido é de 20 dias.'))
         }
         const options = { runValidators: true, new: true }
         var valid = await this.validaPromo( req.params.id)
         if (valid) {
             this.model.findByIdAndUpdate(req.params.id,  { promocao: req.body }, options)
                 .then(() => {
-                    const tempoRestante = new Date(req.body.periodoFinal) - new Date();
                     setTimeout(() => this.removerPromocaoProduto(req.params.id, req.body.periodoFinal), tempoRestante);
 
                     next()
                 }).catch(next)
         } else {
-            next(new NotFoundError('Já possui promoção em andamento!'))
+            next(new BadRequestError('Já possui promoção em andamento!'))
         }
     }
     

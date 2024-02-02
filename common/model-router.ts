@@ -106,7 +106,7 @@ export abstract class ModelRouter<D extends mongoose.Document> extends Router {
     update = (req, resp, next) => {
 
         console.log('Entrou Update')
-        const options = {runValidators:true, new: true}
+        const options = { runValidators: true, new: true }
         this.model.findByIdAndUpdate(req.params.id, req.body, options)
         .then(this.render(resp, next))
         .catch(next)

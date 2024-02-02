@@ -9,14 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.produtosRouter = void 0;
+exports.CuponsRouter = void 0;
 const model_router_1 = require("../../common/model-router");
-const produtos_model_1 = require("./produtos.model");
+const cupons_model_1 = require("./cupons.model");
 const restify_errors_1 = require("restify-errors");
 const authz_handler_1 = require("../../security/authz.handler");
-class ProdutosRouter extends model_router_1.ModelRouter {
+class CuponsRouter extends model_router_1.ModelRouter {
     constructor() {
-        super(produtos_model_1.Produto);
+        super(cupons_model_1.Cupom);
         this.findById = (req, resp, next) => {
             this.model.findById(req.params.id)
                 .populate('loja', 'name')
@@ -26,7 +26,7 @@ class ProdutosRouter extends model_router_1.ModelRouter {
         };
         this.findByLoja = (req, resp, next) => {
             if (req.query.loja) {
-                produtos_model_1.Produto.findByLoja(req.query.loja, req.query.categoria, req.query.ativo)
+                cupons_model_1.Cupom.findByLoja(req.query.loja, req.query.categoria, req.query.ativo)
                     .then(user => {
                     if (user) {
                         return user;
@@ -42,65 +42,65 @@ class ProdutosRouter extends model_router_1.ModelRouter {
                 next();
             }
         };
-        this.validaPromo = (id) => __awaiter(this, void 0, void 0, function* () {
-            var contemPromocao = yield this.model.findById(id)
-                .then((produto) => {
-                if (!produto.promocao) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            })
-                .catch(() => { return false; });
-            return contemPromocao;
-        });
-        this.removerPromocaoProduto = (id, periodoFinal) => __awaiter(this, void 0, void 0, function* () {
+        this.desativarCupom = (id, periodoFinal) => __awaiter(this, void 0, void 0, function* () {
             const options = { runValidators: true, new: true };
-            var valid = yield this.validaPromo(id);
-            if (!valid) {
-                this.model.findByIdAndUpdate(id, { promocao: null }, options)
-                    .then(() => {
-                    console.log("Promoção removida do produto", periodoFinal, new Date());
-                }).catch(() => console.log("Não foi possível remover promoção do produto", periodoFinal, new Date()));
-            }
+            this.model.findByIdAndUpdate(id, { ativo: false }, options)
+                .then(() => {
+                console.log("Cupom desativado", periodoFinal, new Date());
+            }).catch(() => console.log("Não foi possível desativar o cupom", periodoFinal, new Date()));
         });
-        this.cadastrarPromocaoProduto = (req, resp, next) => __awaiter(this, void 0, void 0, function* () {
+        this.validaCupom = (name) => __awaiter(this, void 0, void 0, function* () {
+            var cupom = yield this.model.findOne({ name });
+            if (!cupom) {
+                return true;
+            }
+            return false;
+        });
+        this.aplicaCupom = (req, resp, next) => __awaiter(this, void 0, void 0, function* () {
+            var cupom = yield this.model.findOne({ req, : .params.name });
+            if (!cupom) {
+                next(new restify_errors_1.BadRequestError('Cupom inválido!'));
+            }
+            else if (new Date() > cupom.periodoFinal) {
+                next(new restify_errors_1.BadRequestError('Cupom expirado!'));
+            }
+            else if (new Date() < cupom.periodoInicial) {
+                next(new restify_errors_1.BadRequestError('Cupom inválido!'));
+            }
+            return false;
+        });
+        this.cadastrarCupom = (req, resp, next) => __awaiter(this, void 0, void 0, function* () {
             if (new Date(req.body.periodoFinal) <= new Date()) {
                 next(new restify_errors_1.BadRequestError('Período final inválido!'));
             }
             const tempoRestante = new Date(req.body.periodoFinal) - new Date();
+            //20 dias
             if (tempoRestante > 1728000000) {
                 next(new restify_errors_1.BadRequestError('O intervalo máximo permitido é de 20 dias.'));
             }
-            const options = { runValidators: true, new: true };
-            var valid = yield this.validaPromo(req.params.id);
-            if (valid) {
-                this.model.findByIdAndUpdate(req.params.id, { promocao: req.body }, options)
-                    .then(() => {
-                    setTimeout(() => this.removerPromocaoProduto(req.params.id, req.body.periodoFinal), tempoRestante);
-                    next();
-                }).catch(next);
+            var valid = yield this.validaCupom(req.body.name);
+            if (!valid) {
+                next(new restify_errors_1.ConflictError('Já possui um cupom cadastrado com esse nome.'));
             }
-            else {
-                next(new restify_errors_1.BadRequestError('Já possui promoção em andamento!'));
-            }
+            let document = new this.model(req.body);
+            this.model.create(document)
+                .then((doc) => {
+                setTimeout(() => this.desativarCupom(req.params.id, req.body.periodoFinal), tempoRestante);
+                resp.json(doc);
+                resp.end();
+            })
+                .catch(next);
         });
     }
     envelope(document) {
         let resource = super.envelope(document);
-        const restId = document.loja._id ? document.loja._id : document.loja;
-        resource._links.loja = `/lojas/${restId}`;
-        const restCatId = document.categoria._id ? document.categoria._id : document.categoria;
-        resource._links.categoria = `/categorias/${restCatId}`;
         return resource;
     }
     applyRoutes(application) {
         application.get(`${this.basePath}`, [this.findByLoja, this.findAll]);
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById]);
-        application.post(`${this.basePath}`, [(0, authz_handler_1.authorize)('admin'), this.save]);
+        application.post(`${this.basePath}`, [(0, authz_handler_1.authorize)('admin'), this.cadastrarCupom]);
         application.patch(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.update]);
-        application.post(`${this.basePath}/:id/cadastrarPromocao`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.cadastrarPromocaoProduto, this.findById]);
     }
 }
-exports.produtosRouter = new ProdutosRouter();
+exports.CuponsRouter = CuponsRouter;
