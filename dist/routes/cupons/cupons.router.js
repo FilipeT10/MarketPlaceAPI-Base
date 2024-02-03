@@ -14,6 +14,8 @@ const model_router_1 = require("../../common/model-router");
 const cupons_model_1 = require("./cupons.model");
 const restify_errors_1 = require("restify-errors");
 const authz_handler_1 = require("../../security/authz.handler");
+const produtos_model_1 = require("../produtos/produtos.model");
+const pedidos_model_1 = require("../pedidos/pedidos.model");
 class CuponsRouter extends model_router_1.ModelRouter {
     constructor() {
         super(cupons_model_1.Cupom);
@@ -100,6 +102,67 @@ class CuponsRouter extends model_router_1.ModelRouter {
             })
                 .catch(next);
         });
+        this.consultarCupom = (req, resp, next) => __awaiter(this, void 0, void 0, function* () {
+            if (!req.params.loja) {
+                return next(new restify_errors_1.BadRequestError('Loja inválida!'));
+            }
+            if (!req.params.name) {
+                return next(new restify_errors_1.BadRequestError('Cupom inválido!'));
+            }
+            var cupom = yield this.model.findOne({ name: req.params.name, loja: req.params.loja });
+            if (!cupom) {
+                return next(new restify_errors_1.ConflictError('Não possui nenhum cupom cadastrado com esse nome.'));
+            }
+            if (!cupom.ativo) {
+                return next(new restify_errors_1.ConflictError('Cupom expirado ou inativo.'));
+            }
+            let products = req.body;
+            if (products == undefined || products.length < 1) {
+                return next(new restify_errors_1.BadRequestError('Produtos inválidos!'));
+            }
+            let valorTotal = 0;
+            let valorCorrigido = 0;
+            let valorDesconto = 0;
+            try {
+                yield Promise.all(products.map((id) => __awaiter(this, void 0, void 0, function* () {
+                    var item = yield produtos_model_1.Produto.findOne({ _id: id });
+                    valorTotal += Number(item.preco);
+                })));
+                yield Promise.all(products.map((id) => __awaiter(this, void 0, void 0, function* () {
+                    var item = yield produtos_model_1.Produto.findOne({ _id: id });
+                    if (!item) {
+                        return next(new restify_errors_1.BadRequestError('Não foi possível encontrar o produto!'));
+                    }
+                    if (item.loja != req.params.loja) {
+                        return next(new restify_errors_1.BadRequestError('Não foi possível encontrar o produto na loja!'));
+                    }
+                    var valorDescontoCupom = 0;
+                    if (cupom.condicao == 'all' || cupom.categorias.includes(item.categoria) || cupom.subcategorias.some(id => item.subcategorias.includes(id))) {
+                        var pedidoList = yield pedidos_model_1.Pedido.find({ loja: req.params.loja, user: req.authenticated._id });
+                        if ((cupom.condicao == 'PC' && pedidoList.length < 1) || (cupom.condicao == ">" && cupom.valorCondicao && valorTotal >= cupom.valorCondicao) || cupom.condicao == 'all') {
+                            if (cupom.tipo == "$") {
+                                valorDescontoCupom = Number(cupom.valor);
+                            }
+                            else if (cupom.tipo == "%") {
+                                let valorOriginal = Number(item.preco);
+                                let porcentagemParaSubtrair = cupom.valor;
+                                let porcentagemDecimal = porcentagemParaSubtrair / 100;
+                                let valorDaPorcentagem = valorOriginal * porcentagemDecimal;
+                                valorDescontoCupom = Number(valorDaPorcentagem);
+                            }
+                        }
+                    }
+                    let descontoItem = Number(item.preco) - valorDescontoCupom;
+                    valorDesconto += valorDescontoCupom;
+                    valorCorrigido += descontoItem;
+                })));
+                resp.json({ valorCorrigido: valorCorrigido, valorDesconto, valorTotal });
+                resp.end();
+            }
+            catch (e) {
+                return next(new restify_errors_1.ConflictError('Erro ao calcular a aplicação do cupom.'));
+            }
+        });
     }
     envelope(document) {
         let resource = super.envelope(document);
@@ -110,6 +173,7 @@ class CuponsRouter extends model_router_1.ModelRouter {
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById]);
         application.post(`${this.basePath}`, [(0, authz_handler_1.authorize)('admin'), this.cadastrarCupom]);
         application.patch(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.update]);
+        application.post(`${this.basePath}/consulta/:loja/:name`, [this.consultarCupom]);
     }
 }
 exports.cuponsRouter = new CuponsRouter();

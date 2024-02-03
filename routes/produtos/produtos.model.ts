@@ -10,7 +10,7 @@ export interface Produto extends mongoose.Document{
     name: string,
     descricao: string,
     loja: mongoose.Types.ObjectId | Loja,
-    categoria: mongoose.Types.ObjectId | Categoria,
+    categoria: mongoose.Types.ObjectId,
     preco: string,
     tamanhos: [string],
     cores: [string],
@@ -20,7 +20,7 @@ export interface Produto extends mongoose.Document{
     ativo: boolean,
     data: Date,
     imagens: Imagem[],
-    subcategorias: mongoose.Types.ObjectId[] | SubCategoria[],
+    subcategorias: mongoose.Types.ObjectId[],
 }
 
 

@@ -3,6 +3,10 @@ import * as restify from 'restify'
 import {Cupom} from './cupons.model'
 import {BadRequestError, ConflictError} from 'restify-errors'
 import {authorize} from '../../security/authz.handler'
+import { ProdutoPedido } from '../models/produtopedido.model'
+import { Produto } from '../produtos/produtos.model'
+import { User } from '../users/user.model'
+import { Pedido } from '../pedidos/pedidos.model'
 
 class CuponsRouter extends ModelRouter<Cupom> {
 
@@ -104,6 +108,71 @@ class CuponsRouter extends ModelRouter<Cupom> {
             })
         .catch(next)
     }
+
+    consultarCupom: restify.RequestHandler = async (req, resp, next) => {
+        if (!req.params.loja) {
+            return next(new BadRequestError('Loja inválida!'))
+        }
+        if (!req.params.name) {
+            return next(new BadRequestError('Cupom inválido!'))
+        }
+        var cupom = await this.model.findOne({ name: req.params.name, loja: req.params.loja });
+        if (!cupom) {
+            return next(new ConflictError('Não possui nenhum cupom cadastrado com esse nome.'))
+        }
+        if (!cupom.ativo) {
+            return next(new ConflictError('Cupom expirado ou inativo.'))
+        }
+
+        let products: [Produto] = req.body;
+        
+        if (products == undefined || products.length < 1) {
+            return next(new BadRequestError('Produtos inválidos!'))
+        }
+        let valorTotal = 0;
+        let valorCorrigido = 0;
+        let valorDesconto = 0;
+
+        try {
+            await Promise.all(products.map(async (id) => {
+                var item = await Produto.findOne({ _id: id });
+                valorTotal += Number(item.preco);
+            }))
+            await Promise.all(products.map(async (id) => {
+                var item = await Produto.findOne({ _id: id });
+                if (!item) {
+                    return next(new BadRequestError('Não foi possível encontrar o produto!'))
+                }
+                if (item.loja != req.params.loja) {
+                    return next(new BadRequestError('Não foi possível encontrar o produto na loja!'))
+                }
+                var valorDescontoCupom = 0;
+                if (cupom.condicao == 'all' || cupom.categorias.includes(item.categoria) || cupom.subcategorias.some(id => item.subcategorias.includes(id))) {
+                    var pedidoList = await Pedido.find({ loja: req.params.loja, user: req.authenticated._id });
+                    if ((cupom.condicao == 'PC' && pedidoList.length < 1) || (cupom.condicao == ">" && cupom.valorCondicao && valorTotal >= cupom.valorCondicao ) || cupom.condicao == 'all') {
+                        if (cupom.tipo == "$") {
+                            valorDescontoCupom = Number(cupom.valor);
+                        } else if (cupom.tipo == "%") {
+                            let valorOriginal = Number(item.preco);
+                            let porcentagemParaSubtrair = cupom.valor; 
+                            let porcentagemDecimal = porcentagemParaSubtrair / 100;
+                            let valorDaPorcentagem = valorOriginal * porcentagemDecimal;
+                            valorDescontoCupom = Number(valorDaPorcentagem);
+                        }
+                    }
+                }
+                let descontoItem = Number(item.preco) - valorDescontoCupom
+
+                valorDesconto += valorDescontoCupom;
+                valorCorrigido += descontoItem;
+
+            }))
+            resp.json({valorCorrigido: valorCorrigido, valorDesconto, valorTotal})
+            resp.end();
+        } catch (e) {
+            return next(new ConflictError('Erro ao calcular a aplicação do cupom.'))
+        } 
+    }
     
 
     applyRoutes(application: restify.Server){
@@ -112,6 +181,7 @@ class CuponsRouter extends ModelRouter<Cupom> {
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById])
         application.post(`${this.basePath}`, [authorize('admin'), this.cadastrarCupom])
         application.patch(`${this.basePath}/:id`, [this.validateId, authorize('admin'), this.update])
+        application.post(`${this.basePath}/consulta/:loja/:name`, [this.consultarCupom])
       }
 }
 
