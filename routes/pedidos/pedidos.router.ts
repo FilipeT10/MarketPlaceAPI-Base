@@ -1,11 +1,12 @@
 import {ModelRouter} from '../../common/model-router'
 import * as restify from 'restify'
 import {Pedido} from './pedidos.model'
-import {NotFoundError} from 'restify-errors'
+import {BadRequestError, NotFoundError} from 'restify-errors'
 import {Loja} from "../lojas/lojas.model"
 
 import {authorize} from '../../security/authz.handler'
 import { User } from '../users/user.model'
+import { Produto } from '../produtos/produtos.model'
 
 class PedidosRouter extends ModelRouter<Pedido> {
 
@@ -104,6 +105,29 @@ class PedidosRouter extends ModelRouter<Pedido> {
             next(new NotFoundError('Invalid status'))
         }
     }
+
+    consultarSubtotal: restify.RequestHandler = async (req, resp, next) => {
+        if (!req.params.loja) {
+            return next(new BadRequestError('Loja inválida!'))
+        }
+        let products: [Produto] = req.body;
+        
+        if (products == undefined || products.length < 1) {
+            return next(new BadRequestError('Produtos inválidos!'))
+        }
+        let valorTotal = 0;
+        try {
+            await Promise.all(products.map(async (id) => {
+                var item = await Produto.findOne({ _id: id });
+                valorTotal += Number(item.promocao ? item.promocao.preco : item.preco);
+            }))
+            
+            resp.json({valorTotal})
+            resp.end();
+        } catch (e) {
+            return next(new BadRequestError('Erro ao calcular o valor.'))
+        } 
+    }
     
     findByLoja = (req, resp, next) =>{
         if(req.query.loja){
@@ -128,13 +152,14 @@ class PedidosRouter extends ModelRouter<Pedido> {
 
         application.get(`${this.basePath}`, [this.findByLoja, this.findAll])
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById])
-        application.post(`${this.basePath}`, [this.validateId, this.clearCart])
+        application.post(`${this.basePath}`, [ this.clearCart])
         application.post(`${this.basePath}/:id/aprovar`, [this.validateId, authorize('admin'), this.aprovarPedido, this.findById])
         application.post(`${this.basePath}/:id/pago`, [this.validateId, authorize('admin'), this.setarPagoPedido, this.findById])
         application.post(`${this.basePath}/:id/entrega`, [this.validateId, authorize('admin'), this.setarEntregaPedido, this.findById])
         application.post(`${this.basePath}/:id/finalizar`, [this.validateId, authorize('admin'), this.setarFinalizarPedido, this.findById])
         application.post(`${this.basePath}/:id/cancelar`, [this.validateId, this.cancelarPedido, this.findById])
         application.patch(`${this.basePath}/:id`, [this.validateId, authorize('admin'), this.update])
+        application.post(`${this.basePath}/subtotal/:loja`, [this.consultarSubtotal])
       }
 }
 

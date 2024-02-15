@@ -110,6 +110,7 @@ class CuponsRouter extends ModelRouter<Cupom> {
     }
 
     consultarCupom: restify.RequestHandler = async (req, resp, next) => {
+        
         if (!req.params.loja) {
             return next(new BadRequestError('Loja inválida!'))
         }
@@ -136,7 +137,7 @@ class CuponsRouter extends ModelRouter<Cupom> {
         try {
             await Promise.all(products.map(async (id) => {
                 var item = await Produto.findOne({ _id: id });
-                valorTotal += Number(item.preco);
+                valorTotal += Number(item.promocao ? item.promocao.preco : item.preco);
             }))
             await Promise.all(products.map(async (id) => {
                 var item = await Produto.findOne({ _id: id });
@@ -153,7 +154,7 @@ class CuponsRouter extends ModelRouter<Cupom> {
                         if (cupom.tipo == "$") {
                             valorDescontoCupom = Number(cupom.valor);
                         } else if (cupom.tipo == "%") {
-                            let valorOriginal = Number(item.preco);
+                            let valorOriginal = Number(item.promocao ? item.promocao.preco : item.preco);
                             let porcentagemParaSubtrair = cupom.valor; 
                             let porcentagemDecimal = porcentagemParaSubtrair / 100;
                             let valorDaPorcentagem = valorOriginal * porcentagemDecimal;
@@ -161,12 +162,13 @@ class CuponsRouter extends ModelRouter<Cupom> {
                         }
                     }
                 }
-                let descontoItem = Number(item.preco) - valorDescontoCupom
-
+                let descontoItem = Number(item.promocao ? item.promocao.preco : item.preco) - valorDescontoCupom
                 valorDesconto += valorDescontoCupom;
                 valorCorrigido += descontoItem;
+                console.log(item.name, descontoItem, valorDesconto, valorDescontoCupom)
 
             }))
+            console.log({valorCorrigido: valorCorrigido, valorDesconto, valorTotal})
             resp.json({valorCorrigido: valorCorrigido, valorDesconto, valorTotal})
             resp.end();
         } catch (e) {

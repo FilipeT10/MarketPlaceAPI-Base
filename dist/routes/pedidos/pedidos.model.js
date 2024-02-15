@@ -5,6 +5,7 @@ const produtopedido_model_1 = require("./../models/produtopedido.model");
 const mongoose = require("mongoose");
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 const enderecos_model_1 = require("../models/enderecos.model ");
+const cupomaplicado_model_1 = require("../models/cupomaplicado.model");
 const pedidoSchema = new mongoose.Schema({
     loja: {
         type: mongoose.Schema.Types.ObjectId,
@@ -66,6 +67,10 @@ const pedidoSchema = new mongoose.Schema({
         type: enderecos_model_1.EnderecosSchema,
         required: true,
         default: {}
+    },
+    cupom: {
+        type: cupomaplicado_model_1.CupomAplicadoSchema,
+        required: false
     },
     produtos: {
         type: [produtopedido_model_1.ProdutoPedidoSchema],

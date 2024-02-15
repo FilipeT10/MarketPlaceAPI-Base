@@ -126,7 +126,7 @@ class CuponsRouter extends model_router_1.ModelRouter {
             try {
                 yield Promise.all(products.map((id) => __awaiter(this, void 0, void 0, function* () {
                     var item = yield produtos_model_1.Produto.findOne({ _id: id });
-                    valorTotal += Number(item.preco);
+                    valorTotal += Number(item.promocao ? item.promocao.preco : item.preco);
                 })));
                 yield Promise.all(products.map((id) => __awaiter(this, void 0, void 0, function* () {
                     var item = yield produtos_model_1.Produto.findOne({ _id: id });
@@ -144,7 +144,7 @@ class CuponsRouter extends model_router_1.ModelRouter {
                                 valorDescontoCupom = Number(cupom.valor);
                             }
                             else if (cupom.tipo == "%") {
-                                let valorOriginal = Number(item.preco);
+                                let valorOriginal = Number(item.promocao ? item.promocao.preco : item.preco);
                                 let porcentagemParaSubtrair = cupom.valor;
                                 let porcentagemDecimal = porcentagemParaSubtrair / 100;
                                 let valorDaPorcentagem = valorOriginal * porcentagemDecimal;
@@ -152,10 +152,12 @@ class CuponsRouter extends model_router_1.ModelRouter {
                             }
                         }
                     }
-                    let descontoItem = Number(item.preco) - valorDescontoCupom;
+                    let descontoItem = Number(item.promocao ? item.promocao.preco : item.preco) - valorDescontoCupom;
                     valorDesconto += valorDescontoCupom;
                     valorCorrigido += descontoItem;
+                    console.log(item.name, descontoItem, valorDesconto, valorDescontoCupom);
                 })));
+                console.log({ valorCorrigido: valorCorrigido, valorDesconto, valorTotal });
                 resp.json({ valorCorrigido: valorCorrigido, valorDesconto, valorTotal });
                 resp.end();
             }

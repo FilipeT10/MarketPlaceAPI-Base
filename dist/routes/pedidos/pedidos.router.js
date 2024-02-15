@@ -15,6 +15,7 @@ const pedidos_model_1 = require("./pedidos.model");
 const restify_errors_1 = require("restify-errors");
 const authz_handler_1 = require("../../security/authz.handler");
 const user_model_1 = require("../users/user.model");
+const produtos_model_1 = require("../produtos/produtos.model");
 class PedidosRouter extends model_router_1.ModelRouter {
     constructor() {
         super(pedidos_model_1.Pedido);
@@ -106,6 +107,27 @@ class PedidosRouter extends model_router_1.ModelRouter {
                 next(new restify_errors_1.NotFoundError('Invalid status'));
             }
         });
+        this.consultarSubtotal = (req, resp, next) => __awaiter(this, void 0, void 0, function* () {
+            if (!req.params.loja) {
+                return next(new restify_errors_1.BadRequestError('Loja inválida!'));
+            }
+            let products = req.body;
+            if (products == undefined || products.length < 1) {
+                return next(new restify_errors_1.BadRequestError('Produtos inválidos!'));
+            }
+            let valorTotal = 0;
+            try {
+                yield Promise.all(products.map((id) => __awaiter(this, void 0, void 0, function* () {
+                    var item = yield produtos_model_1.Produto.findOne({ _id: id });
+                    valorTotal += Number(item.promocao ? item.promocao.preco : item.preco);
+                })));
+                resp.json({ valorTotal });
+                resp.end();
+            }
+            catch (e) {
+                return next(new restify_errors_1.BadRequestError('Erro ao calcular o valor.'));
+            }
+        });
         this.findByLoja = (req, resp, next) => {
             if (req.query.loja) {
                 pedidos_model_1.Pedido.findByLoja(req.query.loja, req.query.user, req.query.ativo)
@@ -136,13 +158,14 @@ class PedidosRouter extends model_router_1.ModelRouter {
     applyRoutes(application) {
         application.get(`${this.basePath}`, [this.findByLoja, this.findAll]);
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById]);
-        application.post(`${this.basePath}`, [this.validateId, this.clearCart]);
+        application.post(`${this.basePath}`, [this.clearCart]);
         application.post(`${this.basePath}/:id/aprovar`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.aprovarPedido, this.findById]);
         application.post(`${this.basePath}/:id/pago`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.setarPagoPedido, this.findById]);
         application.post(`${this.basePath}/:id/entrega`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.setarEntregaPedido, this.findById]);
         application.post(`${this.basePath}/:id/finalizar`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.setarFinalizarPedido, this.findById]);
         application.post(`${this.basePath}/:id/cancelar`, [this.validateId, this.cancelarPedido, this.findById]);
         application.patch(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.update]);
+        application.post(`${this.basePath}/subtotal/:loja`, [this.consultarSubtotal]);
     }
 }
 exports.pedidosRouter = new PedidosRouter();

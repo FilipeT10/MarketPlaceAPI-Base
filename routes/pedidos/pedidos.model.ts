@@ -7,6 +7,7 @@ import {User} from '../users/user.model'
 import {Imagem, ImagensSchema} from '../models/imagens.model'
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 import {Endereco, EnderecosSchema} from '../models/enderecos.model '
+import { CupomAplicado, CupomAplicadoSchema } from '../models/cupomaplicado.model';
 export interface Pedido extends mongoose.Document{
     loja: mongoose.Types.ObjectId | Loja,
     user: mongoose.Types.ObjectId | User,
@@ -18,6 +19,7 @@ export interface Pedido extends mongoose.Document{
     pontos: number,
     data: Date,
     endereco: Endereco,
+    cupom: CupomAplicado,
     tipoEntrega: string,
     produtos: ProdutoPedido[],
     observacao: string,
@@ -86,6 +88,10 @@ const pedidoSchema = new mongoose.Schema({
         type: EnderecosSchema,
         required: true,
         default: {}
+    },
+    cupom: {
+        type: CupomAplicadoSchema,
+        required: false
     },
     produtos: {
         type: [ProdutoPedidoSchema],
