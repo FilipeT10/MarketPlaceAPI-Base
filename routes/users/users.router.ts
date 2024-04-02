@@ -7,6 +7,7 @@ import {authenticate, authenticateSGM} from '../../security/auth.handler'
 
 import * as mongoose from 'mongoose'
 import {authorize} from '../../security/authz.handler'
+import { notification } from '../../functions/notifications.handler'
 
 class UsersRouter extends ModelRouter<User> {
 
@@ -39,6 +40,18 @@ class UsersRouter extends ModelRouter<User> {
         User.findByIdAndUpdate(req.params.id, { $push: { carrinho: req.body  } }, options)
         .then(this.renderCarrinho(resp, next))
         .catch(next)
+    }
+    addPushToken: restify.RequestHandler = (req, resp, next) => {
+        const options = { runValidators: true, new: true }
+        User.findByIdAndUpdate(req.params.id, { pushToken: req.body.pushToken  }, options)
+        .then(this.render(resp, next))
+        .catch(next)
+    }
+    postPushNotification: restify.RequestHandler = (req, resp, next) => {
+        if (!req.body || !req.body.title || !req.body.message ) {
+            return next(new NotFoundError('Notificação inválida!'));
+        }
+        notification(req.body.title, req.body.message, req, resp, next)
     }
     clearCarrinho: restify.RequestHandler = (req, resp, next) => {
         const options = { runValidators: true, new: true }
@@ -126,6 +139,8 @@ class UsersRouter extends ModelRouter<User> {
         application.post(`${this.basePath}/authenticate`, authenticate)
         application.post(`${this.basePath}/authenticateSgm`, authenticateSGM)
 
+        application.post(`${this.basePath}/:id/push/add`, [this.validateId, this.addPushToken])
+        application.post(`${this.basePath}/:id/push`, [this.validateId, authorize('admin'), this.postPushNotification])
 
         application.post(`${this.basePath}/:id/carrinho/add`, [this.validateId, this.addCarrinho])
         application.get(`${this.basePath}/:id/carrinho`, [this.validateId, this.getCarrinho])

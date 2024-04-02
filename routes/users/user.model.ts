@@ -14,6 +14,7 @@ export interface User extends mongoose.Document {
     password: string,
     cpf: string,
     gender: string,
+    pushToken: string,
     telefone: string,
     data: Date,
     pontos: number,
@@ -37,6 +38,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         maxlength: 80,
         minlength: 3
+    },
+    pushToken:{ 
+        type: String,
+        required: false,
     },
     telefone:{ 
         type: String,

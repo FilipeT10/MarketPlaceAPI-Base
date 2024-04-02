@@ -7,6 +7,7 @@ const restify_errors_1 = require("restify-errors");
 const auth_handler_1 = require("../../security/auth.handler");
 const mongoose = require("mongoose");
 const authz_handler_1 = require("../../security/authz.handler");
+const notifications_handler_1 = require("../../functions/notifications.handler");
 class UsersRouter extends model_router_1.ModelRouter {
     constructor() {
         super(user_model_1.User);
@@ -33,6 +34,18 @@ class UsersRouter extends model_router_1.ModelRouter {
             user_model_1.User.findByIdAndUpdate(req.params.id, { $push: { carrinho: req.body } }, options)
                 .then(this.renderCarrinho(resp, next))
                 .catch(next);
+        };
+        this.addPushToken = (req, resp, next) => {
+            const options = { runValidators: true, new: true };
+            user_model_1.User.findByIdAndUpdate(req.params.id, { pushToken: req.body.pushToken }, options)
+                .then(this.render(resp, next))
+                .catch(next);
+        };
+        this.postPushNotification = (req, resp, next) => {
+            if (!req.body || !req.body.title || !req.body.message) {
+                return next(new restify_errors_1.NotFoundError('Notificação inválida!'));
+            }
+            (0, notifications_handler_1.notification)(req.body.title, req.body.message, req, resp, next);
         };
         this.clearCarrinho = (req, resp, next) => {
             const options = { runValidators: true, new: true };
@@ -120,6 +133,8 @@ class UsersRouter extends model_router_1.ModelRouter {
         application.del(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('sysAdminMktPlc'), this.delete]);
         application.post(`${this.basePath}/authenticate`, auth_handler_1.authenticate);
         application.post(`${this.basePath}/authenticateSgm`, auth_handler_1.authenticateSGM);
+        application.post(`${this.basePath}/:id/push/add`, [this.validateId, this.addPushToken]);
+        application.post(`${this.basePath}/:id/push`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.postPushNotification]);
         application.post(`${this.basePath}/:id/carrinho/add`, [this.validateId, this.addCarrinho]);
         application.get(`${this.basePath}/:id/carrinho`, [this.validateId, this.getCarrinho]);
         application.del(`${this.basePath}/:id/carrinho/:idItem`, [this.validateId, this.removeItemCarrinho]);

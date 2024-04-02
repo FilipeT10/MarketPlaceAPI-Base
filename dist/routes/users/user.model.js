@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
         maxlength: 80,
         minlength: 3
     },
+    pushToken: {
+        type: String,
+        required: false,
+    },
     telefone: {
         type: String,
         required: true,
