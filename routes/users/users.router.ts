@@ -7,7 +7,7 @@ import {authenticate, authenticateSGM} from '../../security/auth.handler'
 
 import * as mongoose from 'mongoose'
 import {authorize} from '../../security/authz.handler'
-import { notification } from '../../functions/notifications.handler'
+import { notification, notificationAll } from '../../functions/notifications.handler'
 
 class UsersRouter extends ModelRouter<User> {
 
