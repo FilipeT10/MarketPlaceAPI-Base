@@ -45,7 +45,7 @@ class UsersRouter extends model_router_1.ModelRouter {
             if (!req.body || !req.body.title || !req.body.message) {
                 return next(new restify_errors_1.NotFoundError('Notificação inválida!'));
             }
-            (0, notifications_handler_1.notification)(req.body.title, req.body.message, req, resp, next);
+            (0, notifications_handler_1.notification)(req.body.title, req.body.message, req.params.id, req, resp, next);
         };
         this.clearCarrinho = (req, resp, next) => {
             const options = { runValidators: true, new: true };

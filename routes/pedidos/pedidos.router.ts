@@ -2,11 +2,10 @@ import {ModelRouter} from '../../common/model-router'
 import * as restify from 'restify'
 import {Pedido} from './pedidos.model'
 import {BadRequestError, NotFoundError} from 'restify-errors'
-import {Loja} from "../lojas/lojas.model"
-
 import {authorize} from '../../security/authz.handler'
 import { User } from '../users/user.model'
 import { Produto } from '../produtos/produtos.model'
+import { notification } from '../../functions/notifications.handler'
 
 class PedidosRouter extends ModelRouter<Pedido> {
 
@@ -42,7 +41,7 @@ class PedidosRouter extends ModelRouter<Pedido> {
     clearCart: restify.RequestHandler = (req, resp, next) => {
         const options = { runValidators: true, new: true }
         User.findByIdAndUpdate(req.body.user,  { carrinho: []  }, options)
-        .then(this.save(req, resp, next))
+        .then(() =>{this.save(req, resp, next)})
         .catch(next)
     }
     aprovarPedido: restify.RequestHandler = async (req, resp, next) => {
@@ -55,7 +54,11 @@ class PedidosRouter extends ModelRouter<Pedido> {
         var compare = await this.compareStatus(status, req.params.id, next)
         if (compare) {
             this.model.findByIdAndUpdate(req.params.id,  { status: status }, options)
-            .then(() => { next() }).catch(next)
+                .then((pedido) => {
+                    resp.json(200, pedido)
+                    resp.end()
+                    notification("Pedido aprovado!", "O seu pedido "+pedido.numeroPedido+" foi aprovado.", String(pedido.user), req, resp, next)
+                }).catch(next)
         } else {
             next(new NotFoundError('Invalid status'))
         }
@@ -66,7 +69,11 @@ class PedidosRouter extends ModelRouter<Pedido> {
         var compare = await this.compareStatus(status, req.params.id, next)
         if (compare) {
             this.model.findByIdAndUpdate(req.params.id,  { status: status }, options)
-            .then(() => { next() }).catch(next)
+                .then((pedido) => {
+                    resp.json(200, pedido)
+                    resp.end()
+                    notification("Pagamento efetuado!", "O pagamento do seu pedido "+pedido.numeroPedido+" foi efetuado.", String(pedido.user), req, resp, next)
+                }).catch(next)
         } else {
             next(new NotFoundError('Invalid status'))
         }
@@ -78,7 +85,11 @@ class PedidosRouter extends ModelRouter<Pedido> {
         var compare = await this.compareStatus(status, req.params.id, next)
         if (compare) {
             this.model.findByIdAndUpdate(req.params.id,  { status: status }, options)
-            .then(() => { next() }).catch(next)
+                .then((pedido) => {
+                    resp.json(200, pedido)
+                    resp.end()
+                    notification("Pedido a caminho!", "O seu pedido "+pedido.numeroPedido+" está em processo de entrega.", String(pedido.user), req, resp, next)
+                }).catch(next)
         } else {
             next(new NotFoundError('Invalid status'))
         }
@@ -89,7 +100,11 @@ class PedidosRouter extends ModelRouter<Pedido> {
         var compare = await this.compareStatus(status, req.params.id, next)
         if (compare) {
             this.model.findByIdAndUpdate(req.params.id,  { status: status }, options)
-            .then(() => { next() }).catch(next)
+                .then((pedido) => {
+                    resp.json(200, pedido)
+                    resp.end()
+                    notification("Pedido finalizado!", "O seu pedido "+pedido.numeroPedido+" foi finalizado.", String(pedido.user), req, resp, next)
+                }).catch(next)
         } else {
             next(new NotFoundError('Invalid status'))
         }
@@ -100,7 +115,11 @@ class PedidosRouter extends ModelRouter<Pedido> {
         var compare = await this.compareStatus(status, req.params.id, next)
         if (compare) {
             this.model.findByIdAndUpdate(req.params.id,  { status: status }, options)
-            .then(() => { next() }).catch(next)
+                .then((pedido) => {
+                    resp.json(200, pedido)
+                    resp.end()
+                    notification("Pedido cancelado!", "O seu pedido "+pedido.numeroPedido+" foi cancelado.", String(pedido.user), req, resp, next)
+                }).catch(next)
         } else {
             next(new NotFoundError('Invalid status'))
         }
@@ -153,11 +172,11 @@ class PedidosRouter extends ModelRouter<Pedido> {
         application.get(`${this.basePath}`, [this.findByLoja, this.findAll])
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById])
         application.post(`${this.basePath}`, [ this.clearCart])
-        application.post(`${this.basePath}/:id/aprovar`, [this.validateId, authorize('admin'), this.aprovarPedido, this.findById])
-        application.post(`${this.basePath}/:id/pago`, [this.validateId, authorize('admin'), this.setarPagoPedido, this.findById])
-        application.post(`${this.basePath}/:id/entrega`, [this.validateId, authorize('admin'), this.setarEntregaPedido, this.findById])
-        application.post(`${this.basePath}/:id/finalizar`, [this.validateId, authorize('admin'), this.setarFinalizarPedido, this.findById])
-        application.post(`${this.basePath}/:id/cancelar`, [this.validateId, this.cancelarPedido, this.findById])
+        application.post(`${this.basePath}/:id/aprovar`, [this.validateId, authorize('admin'), this.aprovarPedido])
+        application.post(`${this.basePath}/:id/pago`, [this.validateId, authorize('admin'), this.setarPagoPedido])
+        application.post(`${this.basePath}/:id/entrega`, [this.validateId, authorize('admin'), this.setarEntregaPedido])
+        application.post(`${this.basePath}/:id/finalizar`, [this.validateId, authorize('admin'), this.setarFinalizarPedido])
+        application.post(`${this.basePath}/:id/cancelar`, [this.validateId, this.cancelarPedido])
         application.patch(`${this.basePath}/:id`, [this.validateId, authorize('admin'), this.update])
         application.post(`${this.basePath}/subtotal/:loja`, [this.consultarSubtotal])
       }

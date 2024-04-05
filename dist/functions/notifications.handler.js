@@ -4,8 +4,8 @@ exports.notificationAll = exports.notification = void 0;
 const user_model_1 = require("../routes/users/user.model");
 const restify_errors_1 = require("restify-errors");
 const axios_1 = require("axios");
-const notification = (title, message, req, resp, next) => {
-    user_model_1.User.findOne({ _id: req.params.id, loja: req.authenticated.loja })
+const notification = (title, message, id, req, resp, next) => {
+    user_model_1.User.findOne({ _id: id, loja: req.authenticated.loja })
         .then(user => {
         if (!user) {
             return next(new restify_errors_1.BadRequestError("Não foi possível enviar a notificação."));

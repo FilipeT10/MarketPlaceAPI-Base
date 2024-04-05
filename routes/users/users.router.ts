@@ -51,7 +51,7 @@ class UsersRouter extends ModelRouter<User> {
         if (!req.body || !req.body.title || !req.body.message ) {
             return next(new NotFoundError('Notificação inválida!'));
         }
-        notification(req.body.title, req.body.message, req, resp, next)
+        notification(req.body.title, req.body.message, req.params.id, req, resp, next)
     }
     clearCarrinho: restify.RequestHandler = (req, resp, next) => {
         const options = { runValidators: true, new: true }

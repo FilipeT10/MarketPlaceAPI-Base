@@ -14,6 +14,8 @@ const model_router_1 = require("../../common/model-router");
 const produtos_model_1 = require("./produtos.model");
 const restify_errors_1 = require("restify-errors");
 const authz_handler_1 = require("../../security/authz.handler");
+const notifications_handler_1 = require("../../functions/notifications.handler");
+const formatter_1 = require("../../common/formatter");
 class ProdutosRouter extends model_router_1.ModelRouter {
     constructor() {
         super(produtos_model_1.Produto);
@@ -67,19 +69,21 @@ class ProdutosRouter extends model_router_1.ModelRouter {
         });
         this.cadastrarPromocaoProduto = (req, resp, next) => __awaiter(this, void 0, void 0, function* () {
             if (new Date(req.body.periodoFinal) <= new Date()) {
-                next(new restify_errors_1.BadRequestError('Período final inválido!'));
+                return next(new restify_errors_1.BadRequestError('Período final inválido!'));
             }
             const tempoRestante = new Date(req.body.periodoFinal) - new Date();
             if (tempoRestante > 1728000000) {
-                next(new restify_errors_1.BadRequestError('O intervalo máximo permitido é de 20 dias.'));
+                return next(new restify_errors_1.BadRequestError('O intervalo máximo permitido é de 20 dias.'));
             }
             const options = { runValidators: true, new: true };
             var valid = yield this.validaPromo(req.params.id);
             if (valid) {
                 this.model.findByIdAndUpdate(req.params.id, { promocao: req.body }, options)
-                    .then(() => {
+                    .then((produto) => {
                     setTimeout(() => this.removerPromocaoProduto(req.params.id, req.body.periodoFinal), tempoRestante);
-                    next();
+                    resp.json(200, produto);
+                    resp.end();
+                    (0, notifications_handler_1.notificationAll)("Promoção", req.body.descricao + "\nDisponível entre: " + (0, formatter_1.dateFormat)(new Date(req.body.periodoInicial)) + " a " + (0, formatter_1.dateFormat)(new Date(req.body.periodoFinal)), req, resp, next);
                 }).catch(next);
             }
             else {

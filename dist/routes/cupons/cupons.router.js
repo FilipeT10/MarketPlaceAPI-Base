@@ -16,6 +16,8 @@ const restify_errors_1 = require("restify-errors");
 const authz_handler_1 = require("../../security/authz.handler");
 const produtos_model_1 = require("../produtos/produtos.model");
 const pedidos_model_1 = require("../pedidos/pedidos.model");
+const notifications_handler_1 = require("../../functions/notifications.handler");
+const formatter_1 = require("../../common/formatter");
 class CuponsRouter extends model_router_1.ModelRouter {
     constructor() {
         super(cupons_model_1.Cupom);
@@ -82,16 +84,16 @@ class CuponsRouter extends model_router_1.ModelRouter {
         });
         this.cadastrarCupom = (req, resp, next) => __awaiter(this, void 0, void 0, function* () {
             if (new Date(req.body.periodoFinal) <= new Date()) {
-                next(new restify_errors_1.BadRequestError('Período final inválido!'));
+                return next(new restify_errors_1.BadRequestError('Período final inválido!'));
             }
             const tempoRestante = new Date(req.body.periodoFinal) - new Date();
             //20 dias
             if (tempoRestante > 1728000000) {
-                next(new restify_errors_1.BadRequestError('O intervalo máximo permitido é de 20 dias.'));
+                return next(new restify_errors_1.BadRequestError('O intervalo máximo permitido é de 20 dias.'));
             }
             var valid = yield this.validaCupom(req.body.name);
             if (!valid) {
-                next(new restify_errors_1.ConflictError('Já possui um cupom cadastrado com esse nome.'));
+                return next(new restify_errors_1.ConflictError('Já possui um cupom cadastrado com esse nome.'));
             }
             let document = new this.model(req.body);
             this.model.create(document)
@@ -99,6 +101,9 @@ class CuponsRouter extends model_router_1.ModelRouter {
                 setTimeout(() => this.desativarCupom(req.params.id, req.body.periodoFinal), tempoRestante);
                 resp.json(doc);
                 resp.end();
+                if (document.ativo) {
+                    (0, notifications_handler_1.notificationAll)("Cupom " + document.name, document.descricao + "\nDisponível entre: " + (0, formatter_1.dateFormat)(new Date(document.periodoInicial)) + " a " + (0, formatter_1.dateFormat)(new Date(document.periodoFinal)), req, resp, next);
+                }
             })
                 .catch(next);
         });

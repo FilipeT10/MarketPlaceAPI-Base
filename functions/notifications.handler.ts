@@ -4,9 +4,9 @@ import { BadRequestError } from 'restify-errors';
 import axios from 'axios';
 
 
-export const notification = (title: string, message: string, req: restify.Request, resp: restify.Response, next: restify.Next) =>{
+export const notification = (title: string, message: string, id: string, req: restify.Request, resp: restify.Response, next: restify.Next) =>{
 
-    User.findOne({ _id: req.params.id, loja: req.authenticated.loja })
+    User.findOne({ _id: id, loja: req.authenticated.loja })
         .then(user => {
         if (!user) {
             return next(new BadRequestError("Não foi possível enviar a notificação."))

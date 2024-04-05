@@ -3,10 +3,10 @@ import * as restify from 'restify'
 import {Cupom} from './cupons.model'
 import {BadRequestError, ConflictError} from 'restify-errors'
 import {authorize} from '../../security/authz.handler'
-import { ProdutoPedido } from '../models/produtopedido.model'
 import { Produto } from '../produtos/produtos.model'
-import { User } from '../users/user.model'
 import { Pedido } from '../pedidos/pedidos.model'
+import {notificationAll} from '../../functions/notifications.handler'
+import { dateFormat } from '../../common/formatter'
 
 class CuponsRouter extends ModelRouter<Cupom> {
 
@@ -87,16 +87,16 @@ class CuponsRouter extends ModelRouter<Cupom> {
 
     cadastrarCupom: restify.RequestHandler = async (req, resp, next) => {
         if (new Date(req.body.periodoFinal) <= new Date()) {
-            next(new BadRequestError('Período final inválido!'))
+            return next(new BadRequestError('Período final inválido!'))
         }
         const tempoRestante = new Date(req.body.periodoFinal) - new Date();
         //20 dias
         if (tempoRestante > 1728000000) {
-            next(new BadRequestError('O intervalo máximo permitido é de 20 dias.'))
+            return next(new BadRequestError('O intervalo máximo permitido é de 20 dias.'))
         }
         var valid = await this.validaCupom(req.body.name);
         if (!valid) {
-            next(new ConflictError('Já possui um cupom cadastrado com esse nome.'))
+            return next(new ConflictError('Já possui um cupom cadastrado com esse nome.'))
         }
 
         let document = new this.model(req.body);
@@ -105,6 +105,9 @@ class CuponsRouter extends ModelRouter<Cupom> {
                 setTimeout(() => this.desativarCupom(req.params.id, req.body.periodoFinal), tempoRestante);
                 resp.json(doc)
                 resp.end();
+                if (document.ativo) {
+                    notificationAll("Cupom "+document.name, document.descricao+"\nDisponível entre: "+dateFormat(new Date(document.periodoInicial))+" a "+dateFormat(new Date(document.periodoFinal)), req, resp, next)
+                }
             })
         .catch(next)
     }
