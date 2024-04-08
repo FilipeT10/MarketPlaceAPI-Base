@@ -8,6 +8,7 @@ const error_handler_1 = require("./error.handler");
 const merge_patch_parses_1 = require("./merge-patch.parses");
 const token_parser_1 = require("../security/token.parser");
 const logger = require("morgan");
+const verify_cupom_promo_handler_1 = require("../functions/verify.cupom.promo.handler");
 var corsMiddleware = require('restify-cors-middleware');
 var cors = corsMiddleware({
     preflightMaxAge: 5,
@@ -52,6 +53,7 @@ class Server {
                 this.application.listen(environment_1.environment.server.port, () => {
                     console.log('API is running on ' + this.application.url);
                     resolve(this.application);
+                    (0, verify_cupom_promo_handler_1.verifyCupomPromo)();
                 });
                 this.application.on('restifyError', error_handler_1.handleError);
             }

@@ -6,6 +6,7 @@ import { handleError } from './error.handler'
 import {mergePatchBodyParser} from './merge-patch.parses'
 import {tokenParser} from "../security/token.parser"
 import * as logger from 'morgan'
+import { verifyCupomPromo } from '../functions/verify.cupom.promo.handler'
 
 var corsMiddleware = require('restify-cors-middleware');
 
@@ -67,6 +68,7 @@ export class Server{
                 this.application.listen(environment.server.port, ()=>{
                     console.log('API is running on '+this.application.url)
                     resolve(this.application)
+                    verifyCupomPromo()
                 })
 
                 this.application.on('restifyError', handleError)
