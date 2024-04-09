@@ -1,5 +1,6 @@
 import { Produto } from './../produtos/produtos.model';
 import * as mongoose from 'mongoose'
+import { PromocaosSchema } from './promocao.model';
 
 export interface ProdutoPedido extends mongoose.Document{
     name: string,
@@ -32,6 +33,10 @@ const produtoPedidoSchema = new mongoose.Schema({
         type: String,
         required: false,
         maxlength: 20
+    },
+    promocao: {
+        type: PromocaosSchema,
+        required: false,
     },
     cor: {
         type: String,
