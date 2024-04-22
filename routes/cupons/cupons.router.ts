@@ -92,7 +92,7 @@ class CuponsRouter extends ModelRouter<Cupom> {
         const tempoRestante = new Date(req.body.periodoFinal) - new Date();
         //20 dias
         if (tempoRestante > 1728000000) {
-            return next(new BadRequestError('O intervalo máximo permitido é de 20 dias.'))
+            return next(new BadRequestError('O intervalo máximo permitido é de 20 dias a partir da data atual.'))
         }
         var valid = await this.validaCupom(req.body.name);
         if (!valid) {

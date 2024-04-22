@@ -59,7 +59,20 @@ class ProdutosRouter extends ModelRouter<Produto> {
         return contemPromocao
     }
 
-    
+    removerPromocaoProdutoServico: restify.RequestHandler = async (req, resp, next) => {
+        const options = { runValidators: true, new: true }
+        var valid = await this.validaPromo(req.params.id)
+        if (!valid) {
+            this.model.findByIdAndUpdate(req.params.id,  { promocao: null }, options)
+                .then((produto) => {
+                    resp.json(200, produto)
+                    resp.end()
+                }).catch(next)
+        } else {
+            next(new BadRequestError('Não possui promoção em andamento!'))
+        }
+    }
+
     removerPromocaoProduto = async (id, periodoFinal) => {
         const options = { runValidators: true, new: true }
         var valid = await this.validaPromo(id)
@@ -103,7 +116,8 @@ class ProdutosRouter extends ModelRouter<Produto> {
         application.post(`${this.basePath}`, [authorize('admin'), this.save])
         application.patch(`${this.basePath}/:id`, [this.validateId, authorize('admin'), this.update])
         application.post(`${this.basePath}/:id/cadastrarPromocao`, [this.validateId, authorize('admin'), this.cadastrarPromocaoProduto, this.findById])
-      }
+        application.post(`${this.basePath}/:id/removerPromocao`, [this.validateId, authorize('admin'), this.removerPromocaoProdutoServico, this.findById])
+    }
 }
 
 export const produtosRouter = new   ProdutosRouter();

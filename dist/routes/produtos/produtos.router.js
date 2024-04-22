@@ -57,6 +57,20 @@ class ProdutosRouter extends model_router_1.ModelRouter {
                 .catch(() => { return false; });
             return contemPromocao;
         });
+        this.removerPromocaoProdutoServico = (req, resp, next) => __awaiter(this, void 0, void 0, function* () {
+            const options = { runValidators: true, new: true };
+            var valid = yield this.validaPromo(req.params.id);
+            if (!valid) {
+                this.model.findByIdAndUpdate(req.params.id, { promocao: null }, options)
+                    .then((produto) => {
+                    resp.json(200, produto);
+                    resp.end();
+                }).catch(next);
+            }
+            else {
+                next(new restify_errors_1.BadRequestError('Não possui promoção em andamento!'));
+            }
+        });
         this.removerPromocaoProduto = (id, periodoFinal) => __awaiter(this, void 0, void 0, function* () {
             const options = { runValidators: true, new: true };
             var valid = yield this.validaPromo(id);
@@ -105,6 +119,7 @@ class ProdutosRouter extends model_router_1.ModelRouter {
         application.post(`${this.basePath}`, [(0, authz_handler_1.authorize)('admin'), this.save]);
         application.patch(`${this.basePath}/:id`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.update]);
         application.post(`${this.basePath}/:id/cadastrarPromocao`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.cadastrarPromocaoProduto, this.findById]);
+        application.post(`${this.basePath}/:id/removerPromocao`, [this.validateId, (0, authz_handler_1.authorize)('admin'), this.removerPromocaoProdutoServico, this.findById]);
     }
 }
 exports.produtosRouter = new ProdutosRouter();
