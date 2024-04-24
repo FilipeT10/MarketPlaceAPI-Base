@@ -30,6 +30,7 @@ const lojaSchema = new mongoose.Schema({
     },
     tipoLoja: {
         type: String,
+        enum: ["alimentacao", "roupa", "variados"],
         required: true
     },
     ativo: {
