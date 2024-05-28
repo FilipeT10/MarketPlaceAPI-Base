@@ -42,7 +42,8 @@
     "nodemon": "^2.0.15",
     "restify": "8.6.1",
     "restify-cors-middleware": "^1.1.1",
-    "restify-errors": "^8.0.2"
+    "restify-errors": "^8.0.2",
+    "socket.io": "^4.7.5"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.1",

@@ -44,9 +44,10 @@ const userSchema = new mongoose.Schema({
         required: false,
     },
     telefone:{ 
-        type: String,
+        type: Number,
         required: true,
-        maxlength: 12,
+        maxlength: 11,
+        match: /^\d{10,11}$/
     },
     email:{
         type: String,

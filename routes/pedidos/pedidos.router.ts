@@ -12,6 +12,7 @@ class PedidosRouter extends ModelRouter<Pedido> {
     constructor(){
         super(Pedido)
     }
+    
     envelope(document){
         let resource = super.envelope(document)
         const restId = document.loja._id ? document.loja._id : document.loja
@@ -165,6 +166,7 @@ class PedidosRouter extends ModelRouter<Pedido> {
             next()
         }
     }
+    
     
 
     applyRoutes(application: restify.Server){
